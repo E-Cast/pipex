@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/13 01:13:23 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/13 02:49:10 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ char	**split_string(char	*string);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *str);
 char	*concat(const char *src1, const char *src2);
+void	terminate(char **array, int status);
 
 #endif

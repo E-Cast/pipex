@@ -6,11 +6,12 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/13 01:36:15 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/13 02:46:39 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
 
 void	execute(int infile, int outfile, char **argv)
 {

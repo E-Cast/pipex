@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:07:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/13 01:13:19 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/13 02:48:12 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,15 @@ char	*concat(const char *src1, const char *src2)
 		dest[i++] = src2[j++];
 	dest[i] = '\0';
 	return (dest);
+}
+
+void	terminate(char **array, int status)
+{
+	int	i;
+
+	while (array && array[i])
+		free(array[i++]);
+	if (array)
+		free(array);
+	exit(status);
 }
