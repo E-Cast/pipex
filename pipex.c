@@ -6,43 +6,53 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/13 01:13:49 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/13 01:36:15 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+void	execute(int infile, int outfile, char **argv)
+{
+	char	**args;
+	char	*path;
+	int		i;
+
+	args = split_string(argv[2]);
+	path = concat("/bin/", args[0]);
+	dup2(infile, STDIN_FILENO);
+	dup2(outfile, STDOUT_FILENO);
+	execve(path, args, NULL);
+	if (path)
+		free(path);
+	i = 0;
+	while (args[i])
+	{
+		if (args[i])
+			free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
 int	main(int argc, char **argv)
 {
 	int		infile;
 	int		outfile;
-	char	**args;
-	char	*path;
 
 	if (argc < 3)
 		return (0);
-	infile = open(argv[1], O_RDONLY | O_CLOEXEC);
+	infile = open(argv[1], O_RDONLY | __O_CLOEXEC);
 	if (infile == -1)
-	{
-		close(infile);
 		exit(EXIT_FAILURE);
-	}
 	outfile = open(argv[argc - 1], \
-		O_CREAT | O_TRUNC | O_WRONLY | O_CLOEXEC, 0644);
+		O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0644);
 	if (outfile == -1)
 	{
 		close(infile);
-		close(outfile);
 		exit(EXIT_FAILURE);
 	}
-	args = split_string(argv[2]);
-	char *const envp[] = {NULL};
-	path = concat("/bin/", args[0]);
-	dup2(infile, STDIN_FILENO);
-	close(infile);
-	dup2(outfile, STDOUT_FILENO);
-	close(outfile);
-	execve(path, args, envp);
+	execute(infile, outfile, argv);
 	close(infile);
 	close(outfile);
 }
