@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/15 06:58:56 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/15 07:31:56 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,99 +37,87 @@ void	execute(int input, int output, char *string)
 	free(args);
 }
 
-// int	main(int argc, char **argv)
+// void	close_unused_fd(t_fd fd)
 // {
-// 	int		infile;
-// 	int		outfile;
-// 	int		pipe_fd1[2];
-// 	int		pipe_fd2[2];
-// 	pid_t	pid1;
-// 	pid_t	pid2;
-
-
-// 	if (argc < 3)
-// 		return (0);
-// 	infile = open(argv[1], O_RDONLY | __O_CLOEXEC);
-// 	if (infile == -1)
-// 		exit(EXIT_FAILURE);
-/* 	outfile = open(argv[argc - 1], \
- 		O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0644);*/
-// 	if (outfile == -1)
-// 	{
-// 		close(infile);
-// 		exit(EXIT_FAILURE);
-// 	}
 	
-// 	if (pipe(pipe_fd1) == -1 || pipe(pipe_fd2) == -1)
-// 		exit(EXIT_FAILURE);
-// 	pid1 = fork();
-// 	if (pid1 == 0)
-// 	{
-// 		close(pipe_fd1[0]);
-// 		close(outfile);
-// 		execute(infile, pipe_fd1[1], argv[2]);
-// 	}
-// 	pid2 = fork();
-// 	if (pid2 == 0)
-// 	{
-// 		close(pipe_fd1[1]);
-// 		close(infile);
-// 		execute(pipe_fd1[0], outfile, argv[3]);
-// 	}
-// 	close(pipe_fd1[0]);
-// 	close(pipe_fd1[1]);
-// 	close(pipe_fd2[0]);
-// 	close(pipe_fd2[1]);
-// 	close(outfile);
-// 	close(infile);
-// 	waitpid(pid1, NULL, 0);
-// 	waitpid(pid2, NULL, 0);
+// }
+
+// t_fd	fd_get_used(t_fd fd)
+// {
+	
+// 	return (fd);
 // }
 
 int	main(int argc, char **argv)
 {
 	t_fd	fd;
-	pid_t	pid1;
-	pid_t	pid2;
+	pid_t	pid[2];
+	int		counter;
 
 
 	if (argc < 3)
 		return (0);
-	fd.input = open(argv[1], O_RDONLY | __O_CLOEXEC);
-	if (fd.input == -1)
+	fd.infile = open(argv[1], O_RDONLY | __O_CLOEXEC);
+	if (fd.infile == -1)
 		exit(EXIT_FAILURE);
-	fd.output = open(argv[argc - 1], \
-		O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0644);
-	if (fd.output == -1)
+	fd.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0644);
+	if (fd.outfile == -1)
 	{
-		close(fd.input);
+		close(fd.infile);
 		exit(EXIT_FAILURE);
 	}
 	
+	counter = 2;
 	if (pipe(fd.pipe1) == -1 || pipe(fd.pipe2) == -1)
 		exit(EXIT_FAILURE);
-	pid1 = fork();
-	if (pid1 == 0)
+	while (counter < argc - 1)
 	{
-		close(fd.pipe1[0]);
-		close(fd.output);
-		execute(fd.input, fd.pipe1[1], argv[2]);
-	}
-	pid2 = fork();
-	if (pid2 == 0)
-	{
-		close(fd.pipe1[1]);
-		close(fd.input);
-		execute(fd.pipe1[0], fd.output, argv[3]);
+		pid[counter - 2] = fork();
+		if (pid[counter - 2] == 0)
+		{
+			if (counter == 2)
+			{
+				fd.input = fd.infile;
+				close(fd.outfile);
+			}
+			else if (counter % 2)
+			{
+				fd.input = fd.pipe1[0];
+				close(fd.pipe1[1]);
+			}
+			else
+			{
+				fd.input = fd.pipe2[0];
+				close(fd.pipe2[1]);
+			}
+			if (counter + 1 == argc -1)
+			{
+				fd.output = fd.outfile;
+				close(fd.infile);
+			}
+			else if (counter % 2)
+			{
+				fd.output = fd.pipe2[1];
+				close(fd.pipe2[0]);
+			}
+			else
+			{
+				fd.output = fd.pipe1[1];
+				close(fd.pipe1[0]);
+			}
+			execute(fd.input, fd.output, argv[counter]);
+			exit(EXIT_FAILURE);
+		}
+		counter++;
 	}
 	close(fd.pipe1[0]);
 	close(fd.pipe1[1]);
 	close(fd.pipe2[0]);
 	close(fd.pipe2[1]);
-	close(fd.output);
-	close(fd.input);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	close(fd.outfile);
+	close(fd.infile);
+	waitpid(pid[0], NULL, 0);
+	waitpid(pid[1], NULL, 0);
 }
 
 // < infile grep a1 | wc -w > outfile

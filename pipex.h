@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/15 06:56:06 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/15 07:04:40 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 
 typedef struct s_fd
 {
-	int	input;
-	int	output;
+	int	infile;
+	int	outfile;
 	int	pipe1[2];
 	int	pipe2[2];
+	int	input;
+	int	output;
 
 }	t_fd;
 
