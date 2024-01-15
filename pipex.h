@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/15 07:04:40 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/15 07:39:09 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,8 @@ void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *str);
 char	*concat(const char *src1, const char *src2);
 void	terminate(char **array, int status);
+
+void	fd_close_unused(t_fd fd);
+t_fd	fd_get_used(t_fd fd, int counter, int argc);
 
 #endif
