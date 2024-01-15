@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/13 02:49:10 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/15 06:56:06 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
-typedef struct s_args
+typedef struct s_fd
 {
-	char	*infile;
-	char	*outfile;
-	char	***commands;
+	int	input;
+	int	output;
+	int	pipe1[2];
+	int	pipe2[2];
 
-}	t_args;
+}	t_fd;
 
 char	**split_string(char	*string);
 
