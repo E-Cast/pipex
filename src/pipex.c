@@ -6,11 +6,11 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/15 07:39:20 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/16 04:44:01 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 void	execute(int input, int output, char *string)
 {
@@ -46,34 +46,22 @@ int	main(int argc, char **argv)
 
 	if (argc < 3)
 		return (0);
-	fd.infile = open(argv[1], O_RDONLY | __O_CLOEXEC);
-	if (fd.infile == -1)
-		exit(EXIT_FAILURE);
-	fd.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0644);
-	if (fd.outfile == -1)
-	{
-		close(fd.infile);
-		exit(EXIT_FAILURE);
-	}
-	
+
+	fd = fd_open_all(fd, argc, argv);
 	counter = 2;
-	if (pipe(fd.pipe1) == -1 || pipe(fd.pipe2) == -1)
-		exit(EXIT_FAILURE);
 	while (counter < argc - 1)
 	{
 		pid[counter - 2] = fork();
 		if (pid[counter - 2] == 0)
 		{
 			fd = fd_get_used(fd, counter, argc);
-			fd_close_unused(fd);
+			fd_close_unused(fd, fd.input, fd.output);
 			execute(fd.input, fd.output, argv[counter]);
 			exit(EXIT_FAILURE);
 		}
 		counter++;
 	}
-	fd.input = -1;
-	fd.output = -1;
-	fd_close_unused(fd);
+	fd_close_unused(fd, -1, -1);
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], NULL, 0);
 }

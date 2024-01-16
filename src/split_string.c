@@ -6,11 +6,11 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 23:16:29 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/13 02:49:34 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/16 04:44:08 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 static char	*strldup(const char *src, size_t len, char **array)
 {

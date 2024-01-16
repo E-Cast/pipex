@@ -2,4 +2,6 @@ test using only 1 pipe
 if an execve fails the program should continue
 if infile does not exist, print an error, but rin the commands anyways
 bonus
+use access
+use perror
 leaks
