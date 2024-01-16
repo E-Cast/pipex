@@ -3,7 +3,6 @@ NAME = pipex
 # >------------------------------< directories
 SRC_DIR := src/
 OBJ_DIR := .cache/
-BIN_DIR := bin/
 
 # >------------------------------< files
 SRCS := $(wildcard $(SRC_DIR)*.c)
@@ -17,8 +16,7 @@ CFLAGS := -Wall -Wextra -g
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)$(NAME)
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	mkdir -p $(OBJ_DIR)
