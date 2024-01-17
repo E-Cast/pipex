@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/17 07:52:24 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:52:30 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char **argv)
 {
 	pipex_init();
 	if (check_args() == bonus)
-		bonus();
+		here_doc();
 	else
 		pipex();
 }
