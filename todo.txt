@@ -5,3 +5,11 @@ bonus
 use access
 use perror
 leaks
+heredoc running commands eg: $(echo Hello)
+awk can write to another file i believe
+
+- if infile doesn't exist
+- if infile exists but no perms
+- if outfile doesn't exist
+- if outfile exists but no perms
+- if can't access command
