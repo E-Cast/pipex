@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 06:34:27 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/18 08:37:16 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/18 08:48:44 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@
 // 	run pipex as bonus
 // }
 
-t_fd	pipex_init(int argc, char **argv)
+t_fd	open_files(t_fd fd, int argc, char **argv)
 {
-	t_fd	fd;
-
 	if (access(argv[1], R_OK))
 	{
 		perror(argv[1]);
@@ -50,12 +48,34 @@ t_fd	pipex_init(int argc, char **argv)
 	return (fd);
 }
 
+t_fd	open_pipes(t_fd fd)
+{
+	if (pipe(fd.pipe1) == -1)
+	{
+		close(fd.infile);
+		close(fd.outfile);
+		perror("pipe");
+		exit(EXIT_FAILURE);
+	}
+	if (pipe(fd.pipe2) == -1)
+	{
+		close(fd.infile);
+		close(fd.outfile);
+		close(fd.pipe1[0]);
+		close(fd.pipe1[1]);
+		perror("pipe");
+		exit(EXIT_FAILURE);
+	}
+
+	return (fd);
+}
+
 int	main(int argc, char **argv)
 {
 	t_fd	fd;
 
-	fd = pipex_init(argc, argv);
-	(void) fd;
+	fd = open_files(fd, argc, argv);
+	fd = open_pipes(fd);
 	// if (check_args() == bonus)
 	// 	here_doc();
 	// else
