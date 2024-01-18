@@ -5,8 +5,8 @@ bonus
 use access
 use perror
 leaks
-heredoc running commands eg: $(echo Hello)
-awk can write to another file i believe
+heredoc running commands via command substitution? eg: $(echo Hello)
+tee to use a thirdfile
 
 - if infile doesn't exist
 - if infile exists but no perms

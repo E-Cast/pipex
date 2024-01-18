@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/17 17:52:30 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/18 06:34:15 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,29 +65,3 @@ int	main(int argc, char **argv)
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], NULL, 0);
 }
-
-/*
-void	pipex_init()
-{
-	initialize infile and outfile while checking their validity
-}
-
-int	check_args()
-{
-	check if it has an heredoc argument
-}
-
-void	bonus()
-{
-	run pipex as bonus
-}
-
-int	main(int argc, char **argv)
-{
-	pipex_init();
-	if (check_args() == bonus)
-		here_doc();
-	else
-		pipex();
-}
-*/
