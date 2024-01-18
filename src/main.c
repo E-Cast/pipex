@@ -6,12 +6,12 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 06:34:27 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/18 07:21:04 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/18 08:37:16 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../printf.h"
-
+#include "../pipex.h"
+#include <errno.h>
 
 // int	check_args()
 // {
@@ -23,19 +23,44 @@
 // 	run pipex as bonus
 // }
 
-// void	pipex_init(int argc, char **argv)
-// {
-// 	// initialize infile and outfile while checking their validity
-// }
+t_fd	pipex_init(int argc, char **argv)
+{
+	t_fd	fd;
 
-// int	main(int argc, char **argv)
-// {
-// 	pipex_init(argc, argv);
-// 	// if (check_args() == bonus)
-// 	// 	here_doc();
-// 	// else
-// 	// 	pipex();
-// }
+	if (access(argv[1], R_OK))
+	{
+		perror(argv[1]);
+		fd.infile = open("/dev/null", O_RDONLY | __O_CLOEXEC);
+	}
+	else
+		fd.infile = open(argv[1], O_RDONLY | __O_CLOEXEC);
+	if (fd.infile == -1)
+	{
+		perror(argv[argc - 1]);
+		exit(EXIT_FAILURE);
+	}
+	fd.outfile = open(argv[argc - 1], \
+		O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0664);
+	if (fd.outfile == -1)
+	{
+		close(fd.infile);
+		perror(argv[argc - 1]);
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
+}
+
+int	main(int argc, char **argv)
+{
+	t_fd	fd;
+
+	fd = pipex_init(argc, argv);
+	(void) fd;
+	// if (check_args() == bonus)
+	// 	here_doc();
+	// else
+	// 	pipex();
+}
 
 /*
 Files tests:
@@ -45,7 +70,7 @@ Files tests:
 		valid: Run commands with it as first input.
 		nonexistant: Run commands with no input. Error: "bash: filename: No such file or directory"
 		permissions missing: Run commands with no input. Error: "bash: filename: Permission denied"
-		not a text file: Run commands with no input.
+		not a text file: Run commands with no input/Undefined behavior?
 	outfile:
 		valid: Send final output to it.
 		nonexistant: Create it and send final output to it.
