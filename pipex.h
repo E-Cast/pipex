@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/17 07:39:19 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/18 09:57:19 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <errno.h>
 
 typedef struct s_fd
 {

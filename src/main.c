@@ -6,43 +6,36 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 06:34:27 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/18 08:48:44 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:23:53 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-#include <errno.h>
 
-// int	check_args()
-// {
-// 	check if it has an heredoc argument
-// }
-
-// void	bonus()
-// {
-// 	run pipex as bonus
-// }
 
 t_fd	open_files(t_fd fd, int argc, char **argv)
 {
-	if (access(argv[1], R_OK))
+	fd.infile = open(argv[1], O_RDONLY);
+	if (fd.infile == -1 && (errno == ENOENT || errno == EACCES))
 	{
 		perror(argv[1]);
-		fd.infile = open("/dev/null", O_RDONLY | __O_CLOEXEC);
+		fd.infile = open("/dev/null", O_RDONLY);
 	}
-	else
-		fd.infile = open(argv[1], O_RDONLY | __O_CLOEXEC);
 	if (fd.infile == -1)
 	{
 		perror(argv[argc - 1]);
 		exit(EXIT_FAILURE);
 	}
-	fd.outfile = open(argv[argc - 1], \
-		O_CREAT | O_TRUNC | O_WRONLY | __O_CLOEXEC, 0664);
+	fd.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_WRONLY, 0664);
+	if (fd.outfile == -1 && errno == EACCES)
+	{
+		perror(argv[argc - 1]);
+		fd.outfile = open("/dev/null", O_WRONLY);
+	}
 	if (fd.outfile == -1)
 	{
-		close(fd.infile);
 		perror(argv[argc - 1]);
+		close(fd.infile);
 		exit(EXIT_FAILURE);
 	}
 	return (fd);
@@ -52,17 +45,13 @@ t_fd	open_pipes(t_fd fd)
 {
 	if (pipe(fd.pipe1) == -1)
 	{
-		close(fd.infile);
-		close(fd.outfile);
+		close_unused(fd, -1, -1);
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
 	if (pipe(fd.pipe2) == -1)
 	{
-		close(fd.infile);
-		close(fd.outfile);
-		close(fd.pipe1[0]);
-		close(fd.pipe1[1]);
+		close_unused(fd, -1, -1);
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
@@ -70,16 +59,50 @@ t_fd	open_pipes(t_fd fd)
 	return (fd);
 }
 
+void	close_unused(t_fd fd, int used1, int used2)
+{
+	if (fd.infile != used1 && fd.infile == used2)
+		close(fd.infile);
+	if (fd.outfile != used1 && fd.outfile == used2)
+		close(fd.outfile);
+	if (fd.pipe1[0] != used1 && fd.pipe1[0] == used2)
+		close(fd.pipe1[0]);
+	if (fd.pipe1[1] != used1 && fd.pipe1[1] == used2)
+		close(fd.pipe1[1]);
+	if (fd.pipe2[0] != used1 && fd.pipe2[0] == used2)
+		close(fd.pipe2[0]);
+	if (fd.pipe2[1] != used1 && fd.pipe2[1] == used2)
+		close(fd.pipe2[1]);
+	if (fd.input != used1 && fd.input == used2)
+		close(fd.input);
+	if (fd.output != used1 && fd.output == used2)
+		close(fd.output);
+}
+
 int	main(int argc, char **argv)
 {
 	t_fd	fd;
+	int		*pid;
+	int		index;
 
+	if (argc < 3)
+		return (0);
 	fd = open_files(fd, argc, argv);
 	fd = open_pipes(fd);
-	// if (check_args() == bonus)
-	// 	here_doc();
-	// else
-	// 	pipex();
+	pid = ft_calloc(argc - 2, sizeof(int));
+	if (!pid)
+	{
+		close_unused(fd, -1, -1);
+		exit(EXIT_FAILURE);
+	}
+	// index = 2;
+	// while (index < argc - 1)
+	// {
+	// 	fd = get_used(fd, argc, index);
+	// 	pid[index - 2] = execute(fd, argv, index++);
+	// }
+	// close_unused(fd, -1, -1);
+	// wait_all(pid);
 }
 
 /*
@@ -94,7 +117,7 @@ Files tests:
 	outfile:
 		valid: Send final output to it.
 		nonexistant: Create it and send final output to it.
-		permissions missing: Don't run the cmds. Error "bash: filename: Permission denied"
+		permissions missing: Run the cmds with /dev/null as final output. Error "bash: filename: Permission denied"
 		not a text file: Run commands and output them to it, turning it into a text file.
 Cmd tests:
 	invalid cmd:
