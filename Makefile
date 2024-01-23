@@ -6,6 +6,7 @@ OBJ_DIR := .cache/
 
 # >------------------------------< files
 SRCS := $(wildcard $(SRC_DIR)*.c)
+# SRCS := fd.c pipex.c split_string.c utility.c
 OBJS := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
 # >------------------------------< compilation

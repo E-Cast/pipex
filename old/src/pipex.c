@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:26 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/18 06:34:15 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:37:22 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	main(int argc, char **argv)
 	if (argc < 3)
 		return (0);
 
-	fd = fd_open_all(fd, argc, argv);
+	fd = open_files(fd, argc, argv);
+	fd = open_pipes(fd);
 	counter = 2;
 	while (counter < argc - 1)
 	{
@@ -55,13 +56,13 @@ int	main(int argc, char **argv)
 		if (pid[counter - 2] == 0)
 		{
 			fd = fd_get_used(fd, counter, argc);
-			fd_close_unused(fd, fd.input, fd.output);
+			close_unused(fd, fd.input, fd.output);
 			execute(fd.input, fd.output, argv[counter]);
 			exit(EXIT_FAILURE);
 		}
 		counter++;
 	}
-	fd_close_unused(fd, -1, -1);
+	close_unused(fd, -1, -1);
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], NULL, 0);
 }

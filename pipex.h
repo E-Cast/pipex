@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/18 09:57:19 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/19 09:07:57 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ typedef struct s_fd
 
 }	t_fd;
 
+t_fd	open_files(t_fd fd, int argc, char **argv);
+t_fd	open_pipes(t_fd fd);
+t_fd	get_used(t_fd fd, int counter, int argc);
+void	close_unused(t_fd fd, int used1, int used2);
+
 char	**split_string(char	*string);
 
 void	*ft_calloc(size_t count, size_t size);
@@ -38,8 +43,8 @@ size_t	ft_strlen(const char *str);
 char	*concat(const char *src1, const char *src2);
 void	terminate(char **array, int status);
 
-t_fd	fd_open_all(t_fd fd, int argc, char **argv);
-t_fd	fd_get_used(t_fd fd, int counter, int argc);
-void	fd_close_unused(t_fd fd, int input, int output);
+// t_fd	fd_open_all(t_fd fd, int argc, char **argv);
+// t_fd	fd_get_used(t_fd fd, int counter, int argc);
+// void	fd_close_unused(t_fd fd, int input, int output);
 
 #endif

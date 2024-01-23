@@ -6,103 +6,68 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 06:34:27 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/18 10:23:53 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/19 09:39:11 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-
-t_fd	open_files(t_fd fd, int argc, char **argv)
+void	execute(t_fd fd, char *argstr)
 {
-	fd.infile = open(argv[1], O_RDONLY);
-	if (fd.infile == -1 && (errno == ENOENT || errno == EACCES))
+	char	**args;
+	char	*path;
+	int		index;
+
+	args = split_string(argstr);
+	path = concat("/bin/", args[0]);
+	dup2(fd.input, STDIN_FILENO);
+	dup2(fd.output, STDOUT_FILENO);
+	close_unused(fd, -1, -1);
+	execve(path, args, NULL);
+	free(path);
+	index = 0;
+	while (args[index] != NULL)
 	{
-		perror(argv[1]);
-		fd.infile = open("/dev/null", O_RDONLY);
+		free(args[index]);
+		index++;
 	}
-	if (fd.infile == -1)
-	{
-		perror(argv[argc - 1]);
-		exit(EXIT_FAILURE);
-	}
-	fd.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_WRONLY, 0664);
-	if (fd.outfile == -1 && errno == EACCES)
-	{
-		perror(argv[argc - 1]);
-		fd.outfile = open("/dev/null", O_WRONLY);
-	}
-	if (fd.outfile == -1)
-	{
-		perror(argv[argc - 1]);
-		close(fd.infile);
-		exit(EXIT_FAILURE);
-	}
-	return (fd);
+	free(args);
 }
 
-t_fd	open_pipes(t_fd fd)
+void	wait_all(pid_t *pid)
 {
-	if (pipe(fd.pipe1) == -1)
-	{
-		close_unused(fd, -1, -1);
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
-	if (pipe(fd.pipe2) == -1)
-	{
-		close_unused(fd, -1, -1);
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
+	int	index;
+	int	status;
 
-	return (fd);
-}
-
-void	close_unused(t_fd fd, int used1, int used2)
-{
-	if (fd.infile != used1 && fd.infile == used2)
-		close(fd.infile);
-	if (fd.outfile != used1 && fd.outfile == used2)
-		close(fd.outfile);
-	if (fd.pipe1[0] != used1 && fd.pipe1[0] == used2)
-		close(fd.pipe1[0]);
-	if (fd.pipe1[1] != used1 && fd.pipe1[1] == used2)
-		close(fd.pipe1[1]);
-	if (fd.pipe2[0] != used1 && fd.pipe2[0] == used2)
-		close(fd.pipe2[0]);
-	if (fd.pipe2[1] != used1 && fd.pipe2[1] == used2)
-		close(fd.pipe2[1]);
-	if (fd.input != used1 && fd.input == used2)
-		close(fd.input);
-	if (fd.output != used1 && fd.output == used2)
-		close(fd.output);
+	index = 0;
+	while (pid[index])
+	{
+		waitpid(pid[index], &status, 0);
+		index++;
+	}
+	re
 }
 
 int	main(int argc, char **argv)
 {
 	t_fd	fd;
-	int		*pid;
+	pid_t	pid[10];
 	int		index;
 
-	if (argc < 3)
-		return (0);
 	fd = open_files(fd, argc, argv);
 	fd = open_pipes(fd);
-	pid = ft_calloc(argc - 2, sizeof(int));
-	if (!pid)
+	index = 2;
+	while (index < argc - 1)
 	{
-		close_unused(fd, -1, -1);
-		exit(EXIT_FAILURE);
+		pid[index - 2] = fork();
+		if (pid[index - 2] == 0)
+		{
+			fd = get_used(fd, index, argc);
+			execute(fd, argv[index]);
+		}
+		index++;
 	}
-	// index = 2;
-	// while (index < argc - 1)
-	// {
-	// 	fd = get_used(fd, argc, index);
-	// 	pid[index - 2] = execute(fd, argv, index++);
-	// }
-	// close_unused(fd, -1, -1);
-	// wait_all(pid);
+	wait_all(pid);
 }
 
 /*
