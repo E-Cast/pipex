@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 06:34:27 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/19 09:39:11 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/01/25 09:20:48 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	wait_all(pid_t *pid)
 		waitpid(pid[index], &status, 0);
 		index++;
 	}
-	re
 }
 
 int	main(int argc, char **argv)

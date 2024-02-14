@@ -1,34 +1,66 @@
-NAME = pipex
+SRC				=	main.c #sources here
 
-# >------------------------------< directories
-SRC_DIR := src/
-OBJ_DIR := .cache/
+SRC_DIR			:=	sources/
+OBJ_DIR			:=	objects/
+SRC				:=	$(addprefix $(SRC_DIR), $(SRC))
+OBJ				:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
+NAME			:=	#output name here
 
-# >------------------------------< files
-SRCS := $(wildcard $(SRC_DIR)*.c)
-# SRCS := fd.c pipex.c split_string.c utility.c
-OBJS := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
+# DEBUG			:=	-g 
+CC				:=	gcc -Wall -Werror -Wextra $(DEBUG)
+INC_DIR			:= 	includes
+INCLUDES		:=	-I $(INC_DIR)
+## LIBFT_DIR		:=	libft/
+## LIBFT			:=	$(LIBFT_DIR)libft.a
+## LIBFT_FLAGS		:=	-L $(LIBFT_DIR)
 
-# >------------------------------< compilation
-CC := gcc
-CFLAGS := -Wall -Wextra -g
-
-# >------------------------------< rules
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@
+$(NAME): $(OBJ_DIR) $(OBJ)
+	@$(CC)$(INCLUDES) $(OBJ) -o $@
+	@echo "$(CC)$(INCLUDES) -o $(NAME)"
+## $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
+## 	@$(CC)$(INCLUDES) $(LIBFT_FLAGS) $(OBJ) -lft -o $@
+## 	@echo "$(CC)$(INCLUDES) -lft -o $(NAME)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@$(CC)$(INCLUDES) -c $< -o $@
+	@echo "$(CC)$< $@"
+
+$(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -f $(OBJ)
+	@rm -f $(NAME)
+
+re: clean all
+
+## libft/Makefile:
+## 	git submodule init
+## 	git submodule update --remote
+
+## libft:
+## 	git submodule init
+## 	git submodule update --remote
+## 	@make --no-print-directory -C $(LIBFT_DIR) re
+
+## $(LIBFT): libft/Makefile
+## 	@make --no-print-directory -C $(LIBFT_DIR)
+
+## clean_libft:
+## 	@make --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -rf $(BIN_DIR)
+	@rm -rf $(OBJ_DIR)
+## fclean: clean clean_bonus
+## 	@rm -rf $(OBJ_DIR) $(B_OBJ_DIR)
+## 	@make --no-print-directory -C $(LIBFT_DIR) fclean
 
-re: fclean all
+norm:
+	@norminette $(SRC) $(INC_DIR) || true
+## norm:
+## 	@norminette $(SRC) $(INC_DIR) $(LIBFT_DIR) || true
 
-.PHONY: all clean fclean re
+.PHONY: all clean re bonus fclean norm
+## .PHONY: all clean re bonus fclean norm libft
