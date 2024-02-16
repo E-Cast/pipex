@@ -4,3 +4,8 @@
 *.out
 objects/
 pipex
+
+infile
+outfile
+thirdfile
+fourthfile
