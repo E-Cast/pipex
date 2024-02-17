@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_old.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 22:17:32 by ecastong          #+#    #+#             */
-/*   Updated: 2024/01/19 09:07:57 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:33:02 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_OLD_H
+# define PIPEX_OLD_H
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
