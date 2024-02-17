@@ -6,36 +6,46 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/16 21:54:41 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/17 18:06:22 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+#include <stdio.h>
 // 0"name" 1"infile" 2"cmd" 3"cmd" 4"outfile" argc == 5
-t_list	*process_args(int argc, char **argv)
+char	**prep_arg(char *arg_str)
 {
-	t_list	*args;
+	char	**split_string;
+	char	**args;
 	int		index;
 
-	index = 2;
-	while (index > argc - 1)
+	split_string = ft_split(arg_str, ' ');
+	index = 0;
+	while (split_string[index] != NULL)
+		index++;
+	args = ft_calloc(index + 2, sizeof(char *));
+	args[0] = ft_strjoin("/bin/", split_string[0]);
+	index = 0;
+	while (split_string[index] != NULL)
 	{
-		args = ft_lstnew(ft_split(argv[index], ' '));
+		args[index + 1] = split_string[index];
 		index++;
 	}
-	return (&args);
+	my_safefree(split_string);
+	return (args);
 }
 
 int	main(int argc, char **argv)
 {
-	t_list	*args;
+	char	**args;
+	int		index;
 
-	if (argc < 5)
+	(void) argc;
+	args = prep_arg(argv[2]);
+	index = 0;
+	while (args[index] != NULL)
 	{
-		ft_putendl_fd("Error: Not enough arguments.", STDERR_FILENO); //
-		return (1);
+		printf("%s\n", args[index++]);
 	}
-	args = process_args(argc, argv);
-	(void) args;
 }
