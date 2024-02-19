@@ -1,4 +1,5 @@
-SRC				=	main.c
+SRC				=	main.c \
+					args.c \
 
 SRC_DIR			:=	sources/
 OBJ_DIR			:=	objects/

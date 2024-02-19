@@ -6,12 +6,16 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/16 14:57:54 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/18 22:14:57 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 # include "libft.h"
+
+# include <stdio.h> //
+
+char	**split_argstr(char *argstr);
 
 #endif
