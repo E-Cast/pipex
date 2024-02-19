@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/18 22:15:42 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/19 03:10:10 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@
 int	main(int argc, char **argv)
 {
 	int	i = 0;
-	// (void) argc;
-	// (void) argv;
-	printf("%i\n", argc);
-	while (argv[i] != NULL)
-		printf("%s\n", argv[i++]);
-	split_argstr(argv[2]);
+	(void) argc;
+	(void) argv;
+	// printf("%i\n", argc);
+	// while (argv[i] != NULL)
+	// 	printf("%s\n", argv[i++]);
+	split_argstr(argv[i - 1]);
 }

@@ -49,7 +49,7 @@ $(LIBFT): libft/Makefile
 clean_libft:
 	@make --no-print-directory -C $(LIBFT_DIR) clean
 
-fclean: clean clean_bonus
+fclean: clean
 	@rm -rf $(OBJ_DIR) $(B_OBJ_DIR)
 	@make --no-print-directory -C $(LIBFT_DIR) fclean
 
