@@ -6,26 +6,32 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/21 22:59:01 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/22 03:16:20 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+//./pipex here_doc eof cmd1 cmd2 outfile 5
+//./pipex infile cmd1 cmd2 outfile 6
 void	init(t_pipex *pipex, int argc, char **argv, char **envp)
 {
 	if (my_strcmp(argv[1], "here_doc") == 0)
 	{
 		open_heredoc(pipex, argv[2]);
 		open_outfile(pipex, argv[argc - 1], O_APPEND);
+		pipex->cmd_count = argc - 4;
 	}
 	else
 	{
 		open_infile(pipex, argv[1]);
 		open_outfile(pipex, argv[argc - 1], O_TRUNC);
+		pipex->cmd_count = argc - 3;
 	}
-	// get cmd count
-	// alloc args and path accordingly
+	pipex->path = ft_calloc(pipex->cmd_count + 1, sizeof(char *));
+	pipex->args = ft_calloc(pipex->cmd_count + 1, sizeof(char *));
+	if (pipex->path == NULL || pipex->args == NULL)
+		return ;//terminate
 	// get paths and args for every cmd
 	// put them into the paths and args array
 	pipex->envp = envp;
