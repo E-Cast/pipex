@@ -1,4 +1,5 @@
 SRC				=	main.c \
+					fd.c \
 					args.c \
 
 SRC_DIR			:=	sources/

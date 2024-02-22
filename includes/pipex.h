@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/21 19:33:08 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/21 22:50:08 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ typedef struct s_pipex
 	char	**envp;
 }	t_pipex;
 
-// int	
+void	open_heredoc(t_pipex *pipex, char *limiter);
+void	open_infile(t_pipex *pipex, char *infile);
+void	open_outfile(t_pipex *pipex, char *outfile, int flag);
 
 // char	**split_argstr(char *argstr);
 
