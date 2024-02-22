@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/21 22:50:44 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/21 22:59:01 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ int	main(int argc, char **argv, char **envp)
 	if (pipex == NULL)
 		return (1);//terminate
 	init(pipex, argc, argv, envp);
+
+	char	*read;
+	read = get_next_line(pipex->input_file);
+	while (read != NULL)
+	{
+		printf("%s", read);
+		ft_putstr_fd(read, pipex->output_file);
+		read = get_next_line(pipex->input_file);
+	}
 }
