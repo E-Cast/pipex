@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/23 03:07:13 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/23 03:15:09 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ interpret it
 put the interpreted block in the array
 */
 
-void	alloc_args_array(t_pipex *pipex, int args_index, char *argstr)
+void	alloc_args_array(char ***array, char *argstr)
 {
 	int	index;
 	int	arg_count;
@@ -44,8 +44,9 @@ void	alloc_args_array(t_pipex *pipex, int args_index, char *argstr)
 			arg_count++;
 		index++;
 	}
-	pipex->args[args_index] = ft_calloc(arg_count + 1, sizeof(char *));
-	if (pipex->args[args_index] == NULL)
+	*array = ft_calloc(arg_count + 1, sizeof(char *));
+	*array[0] = ft_strdup("Hello Test");
+	if (*array == NULL)
 		return ;//terminate
 }
 
@@ -57,7 +58,8 @@ void	parse_cmds(t_pipex *pipex, int argc, char **argv)
 	printf("%i\n%i\n", index, argc);
 	while (index < argc - 1)
 	{
-		alloc_args_array(pipex, index - (argc - 3), argv[index]);
+		alloc_args_array(&pipex->args[index - (argc - 3)], argv[index]);
+		// printf("%s\n", pipex->args[index - (argc - 3)][0]);
 		index++;
 	}
 }
