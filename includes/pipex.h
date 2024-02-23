@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/21 22:50:08 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/22 22:05:48 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef struct s_pipex
 {
 	int		input_file;
 	int		output_file;
-	bool	here_doc;
 	int		cmd_count;
 	char	**path;
 	char	***args;
