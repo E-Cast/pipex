@@ -6,93 +6,62 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:30:52 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/21 06:02:59 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/24 04:57:50 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*Handle \, special chars, ' and "
-' vs "
-send the strings without '' and ""*/
-
-// char	**fill_array(char **args, char *arg_str)
+// void	parse_args_array(char ***array, char *argstr)
 // {
-// 	int		start;
-// 	int		index;
-// 	int		arr_index;
+// 	int	index;
+// 	int	start;
+// 	int	status;
 
-// 	start = 0;
 // 	index = 0;
-// 	arr_index = 1;
-// 	while (arg_str[index])
+// 	start = 0;
+// 	status = 0;
+// 	while (argstr[index])
 // 	{
-// 		if (arg_str[index] == '\'' || arg_str[index] == '\"')
-// 			index = skip_quotes(index, arg_str);
-// 		if (arg_str[index] == ' ' || arg_str[index] == '\0')
+// 		if (status == 0 && (argstr[index] == '\'' || argstr[index] == '\"'))
 // 		{
-// 			args[arr_index++] = ft_substr(arg_str, start, index - start);
-// 			if (args[arr_index - 1] == NULL)
-// 				return (my_freearr((void **)args, arr_index));
+// 			status = argstr[index];
 // 			start = index + 1;
 // 		}
+// 		else if ((status == 0 || status == '\"') && argstr[index] == '\\')
+// 			index++;
+// 		else if (status != 0 && argstr[index] == status)
+// 			status = 0;
+// 		else if (status == 0 && argstr[index] == ' ')
+
 // 		index++;
 // 	}
-// 	args[0] = ft_strjoin("/bin/", args[1]);
-// 	if (args[0] == NULL)
-// 		my_freearr((void **)args, arr_index);
-// 	return (args);
+// 	if (*array == NULL)
+// 		return ;//terminate
 // }
 
-// char	**alloc_array(char *arg_str)
+// void	alloc_args_array(char ***array, char *argstr)
 // {
-// 	int		index;
-// 	int		arr_size;
+// 	int	index;
+// 	int	arg_count;
+// 	int	status;
 
 // 	index = 0;
-// 	arr_size = 2;
-// 	while (arg_str[index])
+// 	arg_count = 1;
+// 	status = 0;
+// 	while (argstr[index])
 // 	{
-// 		if (arg_str[index] == ' ')
-// 			arr_size++;
-// 		if (arg_str[index] == '\'' || arg_str[index] == '\"')
-// 			index = skip_quotes(index, arg_str);
+// 		if (status == 0 && (argstr[index] == '\'' || argstr[index] == '\"'))
+// 			status = argstr[index];
+// 		else if ((status == 0 || status == '\"') && argstr[index] == '\\')
+// 			index++;
+// 		else if (status != 0 && argstr[index] == status)
+// 			status = 0;
+// 		else if (status == 0 && argstr[index] == ' ')
+// 			arg_count++;
 // 		index++;
 // 	}
-// 	return (ft_calloc(arr_size + 1, sizeof(char *)));
-// }
-
-// // "grep 'hello world'" == 3 "grep" "hello world"
-// // "grep hello 'world '$" == 4 "grep" "hello" "world $"
-// // "grep'hello world'" == 2 "grephello world"
-
-// // "grep hello world'" or "grep 'hello world" (Do i even have to deal with them or will grep do it for me?)
-// // "grep 'hello \'world'"
-// char	**split_argstr(char *argstr)
-// {
-// 	char	**args;
-
-// 	args = alloc_array(argstr);
-// 	if (args == NULL)
-// 	{
-// 		perror("pipex");
-// 		return (NULL);
-// 	}
-// 	args = fill_array(args, argstr);
-// 	if (args == NULL)
-// 	{
-// 		perror("pipex");
-// 		return (NULL);
-// 	}
-// 	return (args);
-// }
-
-/*
-"GREP_COLOR='1;32' grep 'hello world'"
-*/
-// t_cmd	get_args(char*argstr)
-// {
-// 	t_cmd	args;
-
-// 	return (args);
+// 	*array = ft_calloc(arg_count + 1, sizeof(char *));
+// 	if (*array == NULL)
+// 		return ;//terminate
 // }
