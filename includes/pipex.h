@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 13:25:48 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 15:38:14 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_cmd
 	char			*path;
 	char			**args;
 	struct s_cmd	*next;
+	char			**envp;
 }	t_cmd;
 
 typedef struct s_pipex
@@ -33,8 +34,12 @@ typedef struct s_pipex
 	int		last_cmd;
 	int		cmd_count;
 	t_cmd	*cmd_list;
-	char	**envp;
 }	t_pipex;
+
+t_cmd	*cmd_lst_last(t_cmd *cmd_lst); // to change
+void	cmd_lst_add(t_cmd **cmd_lst, t_cmd *node); // to change
+
+/*Input and output files.*/
 
 void	open_heredoc(t_pipex *pipex, char *limiter);
 void	open_infile(t_pipex *pipex, char *infile);

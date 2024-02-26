@@ -6,38 +6,11 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 13:43:05 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 15:38:23 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-t_cmd	*cmd_lst_last(t_cmd *cmd_lst)
-{
-	t_cmd	*index;
-
-	if (!cmd_lst)
-		return (0);
-	index = cmd_lst;
-	while (index->next)
-		index = index->next;
-	return (index);
-}
-
-void	cmd_lst_add(t_cmd **cmd_lst, t_cmd *node)
-{
-	t_cmd	*index;
-
-	if (!node)
-		return ;
-	if (!*cmd_lst)
-		*cmd_lst = node;
-	else
-	{
-		index = cmd_lst_last(*cmd_lst);
-		index->next = node;
-	}
-}
 
 /*
 ./pipex "grep 'Hello \' World"
@@ -51,31 +24,7 @@ grep
 Hello " World
 */
 
-//./pipex infile 'grep "Hello \" World"'(2) "grep 'Hello \' World"(3) outfile 6
-//./pipex here_doc EOF cmd1 cmd2 outfile 5
-void	make_cmd_lst(t_pipex *pipex, int argc, char **argv)
-{
-	int		index;
-	t_cmd	*cmd_node;
-
-	index = argc - (pipex->cmd_count + 1);
-	while (index < argc - 1)
-	{
-		cmd_node = ft_calloc(1, sizeof(t_cmd));
-		if (cmd_node == NULL)
-			return ;//terminate failure error
-		cmd_node->args = ft_split(argv[index], ' ');
-		if (cmd_node->args == NULL)
-			return ;//terminate failure error
-		cmd_node->path = ft_strjoin("/usr/bin/", cmd_node->args[0]);
-		if (cmd_node->path == NULL)
-			return ;//terminate failure error
-		cmd_lst_add(&pipex->cmd_list, cmd_node);//to change
-		index++;
-	}
-}
-
-void	make_cmd(t_pipex *pipex, char *argstr)
+void	make_cmd(t_pipex *pipex, char *argstr, char **envp)
 {
 	t_cmd	*cmd_node;
 
@@ -89,6 +38,7 @@ void	make_cmd(t_pipex *pipex, char *argstr)
 	if (cmd_node->path == NULL)
 		return ;//terminate failure error
 	cmd_lst_add(&pipex->cmd_list, cmd_node);//to change
+	cmd_node->envp = envp;
 }
 
 void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
@@ -111,8 +61,7 @@ void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
 	if (pipex->last_cmd < pipex->first_cmd)
 		printf("terminate\n");// return ;//terminate failure no error
 	while (pipex->first_cmd <= pipex->last_cmd)
-		make_cmd(pipex, argv[pipex->first_cmd++]);
-	pipex->envp = envp;
+		make_cmd(pipex, argv[pipex->first_cmd++], envp);
 }
 
 // void	exec_pipex()
