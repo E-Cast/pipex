@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 15:38:23 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 16:39:07 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,23 @@ Hello " World
 
 void	make_cmd(t_pipex *pipex, char *argstr, char **envp)
 {
-	t_cmd	*cmd_node;
+	t_cmd	*cmd;
 
-	cmd_node = ft_calloc(1, sizeof(t_cmd));
-	if (cmd_node == NULL)
+	cmd = ft_calloc(1, sizeof(t_cmd));
+	if (cmd == NULL)
 		return ;//terminate failure error
-	cmd_node->args = ft_split(argstr, ' ');
-	if (cmd_node->args == NULL)
+	cmd->args = ft_split(argstr, ' ');
+	if (cmd->args == NULL)
 		return ;//terminate failure error
-	cmd_node->path = ft_strjoin("/usr/bin/", cmd_node->args[0]);
-	if (cmd_node->path == NULL)
+	cmd->path = ft_strjoin("/usr/bin/", cmd->args[0]);
+	if (cmd->path == NULL)
 		return ;//terminate failure error
-	cmd_lst_add(&pipex->cmd_list, cmd_node);//to change
-	cmd_node->envp = envp;
+	if (pipex->cmd_lst == NULL)
+		cmd->index = 1;
+	else
+		cmd->index = cmd_lst_last(pipex->cmd_lst)->index + 1;
+	cmd_lst_add(&pipex->cmd_lst, cmd);//to change
+	cmd->envp = envp;
 }
 
 void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
@@ -64,10 +68,32 @@ void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
 		make_cmd(pipex, argv[pipex->first_cmd++], envp);
 }
 
-// void	exec_pipex()
-// {
-// 	// (void) pipex;
-// }
+void	exec_pipex(t_pipex *pipex)
+{
+	t_cmd	*command;
+
+	command = pipex->cmd_lst;
+	while (command)
+	{
+		printf("%i\n", command->index);
+		printf("%s\n%s\n", command->args[0], command->path);
+		command = command->next;
+	}
+	/*
+	get the pipes
+	while commands to be executed
+		fork
+		find the right fds
+		call exec_cmd with the t_cmd
+		dup2 on fds
+		execve
+		get next t_cmd
+	while pids to wait out
+		get pid from t_cmd
+		wait pid
+		get next t_cmd
+	*/
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -79,7 +105,7 @@ int	main(int argc, char **argv, char **envp)
 	if (pipex == NULL)
 		return (1);//terminate failure error
 	init_pipex(pipex, argc, argv, envp);
-	// exec_pipex(pipex);
+	exec_pipex(pipex);
 
 	// char	*read;
 	// read = get_next_line(pipex->input_file);
@@ -88,7 +114,7 @@ int	main(int argc, char **argv, char **envp)
 	// 	ft_putstr_fd(read, pipex->output_file);
 	// 	read = get_next_line(pipex->input_file);
 	// }
-	// t_cmd	*cmd = pipex->cmd_list;
+	// t_cmd	*cmd = pipex->cmd_lst;
 	// // printf("%s$\n%s$\n%s$\n%s$\n", cmd->path, cmd->args[0], cmd->args[1], cmd->args[2]);
 	// // dup2(pipex->input_file, STDIN_FILENO);
 	// // close(pipex->input_file);

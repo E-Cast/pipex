@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 15:38:14 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 16:40:43 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@
 
 typedef struct s_cmd
 {
+	int				index;
 	char			*path;
 	char			**args;
-	struct s_cmd	*next;
 	char			**envp;
+	// int				pid;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_pipex
@@ -33,7 +35,7 @@ typedef struct s_pipex
 	int		first_cmd;
 	int		last_cmd;
 	int		cmd_count;
-	t_cmd	*cmd_list;
+	t_cmd	*cmd_lst;
 }	t_pipex;
 
 t_cmd	*cmd_lst_last(t_cmd *cmd_lst); // to change
