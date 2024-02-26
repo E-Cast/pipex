@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 12:26:12 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 13:25:48 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef struct s_pipex
 	int		first_cmd;
 	int		last_cmd;
 	int		cmd_count;
-	char	**envp;
 	t_cmd	*cmd_list;
+	char	**envp;
 }	t_pipex;
 
 void	open_heredoc(t_pipex *pipex, char *limiter);

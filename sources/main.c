@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 12:50:09 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 13:43:05 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,22 @@ void	make_cmd_lst(t_pipex *pipex, int argc, char **argv)
 	}
 }
 
+void	make_cmd(t_pipex *pipex, char *argstr)
+{
+	t_cmd	*cmd_node;
+
+	cmd_node = ft_calloc(1, sizeof(t_cmd));
+	if (cmd_node == NULL)
+		return ;//terminate failure error
+	cmd_node->args = ft_split(argstr, ' ');
+	if (cmd_node->args == NULL)
+		return ;//terminate failure error
+	cmd_node->path = ft_strjoin("/usr/bin/", cmd_node->args[0]);
+	if (cmd_node->path == NULL)
+		return ;//terminate failure error
+	cmd_lst_add(&pipex->cmd_list, cmd_node);//to change
+}
+
 void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
 {
 	pipex->last_cmd = argc - 2;
@@ -93,15 +109,16 @@ void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
 		pipex->cmd_count = argc - 3;
 	}
 	if (pipex->last_cmd < pipex->first_cmd)
-		return ;//terminate failure no error
-	make_cmd_lst(pipex, argc, argv);
+		printf("terminate\n");// return ;//terminate failure no error
+	while (pipex->first_cmd <= pipex->last_cmd)
+		make_cmd(pipex, argv[pipex->first_cmd++]);
 	pipex->envp = envp;
 }
 
-void	exec_pipex()
-{
-
-}
+// void	exec_pipex()
+// {
+// 	// (void) pipex;
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -113,22 +130,22 @@ int	main(int argc, char **argv, char **envp)
 	if (pipex == NULL)
 		return (1);//terminate failure error
 	init_pipex(pipex, argc, argv, envp);
-	exec_pipex(pipex);
+	// exec_pipex(pipex);
 
-	char	*read;
-	read = get_next_line(pipex->input_file);
-	while (read != NULL)
-	{
-		ft_putstr_fd(read, pipex->output_file);
-		read = get_next_line(pipex->input_file);
-	}
-	t_cmd	*cmd = pipex->cmd_list;
-	// printf("%s$\n%s$\n%s$\n%s$\n", cmd->path, cmd->args[0], cmd->args[1], cmd->args[2]);
-	// dup2(pipex->input_file, STDIN_FILENO);
-	// close(pipex->input_file);
-	dup2(open("/dev/null", O_RDONLY), STDIN_FILENO);
-	// close(STDIN_FILENO);
-	dup2(pipex->output_file, STDOUT_FILENO);
-	close(pipex->output_file);
-	execve(cmd->path, cmd->args, pipex->envp);
+	// char	*read;
+	// read = get_next_line(pipex->input_file);
+	// while (read != NULL)
+	// {
+	// 	ft_putstr_fd(read, pipex->output_file);
+	// 	read = get_next_line(pipex->input_file);
+	// }
+	// t_cmd	*cmd = pipex->cmd_list;
+	// // printf("%s$\n%s$\n%s$\n%s$\n", cmd->path, cmd->args[0], cmd->args[1], cmd->args[2]);
+	// // dup2(pipex->input_file, STDIN_FILENO);
+	// // close(pipex->input_file);
+	// dup2(open("/dev/null", O_RDONLY), STDIN_FILENO);
+	// // close(STDIN_FILENO);
+	// dup2(pipex->output_file, STDOUT_FILENO);
+	// close(pipex->output_file);
+	// execve(cmd->path, cmd->args, pipex->envp);
 }
