@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/22 02:59:22 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/26 12:51:00 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 	char	*input;
 
 	if (pipe(hd_pipe) == -1)
-		return ;//terminate
+		return ;//terminate failure error
 	ft_putstr_fd("heredoc> ", STDOUT_FILENO);
 	input = get_next_line(STDIN_FILENO);
 	while (input != NULL)
@@ -40,11 +40,15 @@ void	open_infile(t_pipex *pipex, char *infile)
 	if (access(infile, R_OK) == 0)
 		pipex->input_file = open(infile, O_RDONLY);
 	else if (errno == ENOENT || errno == EACCES)
+	{
 		pipex->input_file = open("/dev/null", O_RDONLY);
+		// print error
+		pipex->first_cmd += 1;
+	}
 	else
-		return ;//terminate
+		return ;//terminate failure error
 	if (pipex->output_file == -1)
-		return ;//terminate
+		return ;//terminate failure error
 }
 
 void	open_outfile(t_pipex *pipex, char *outfile, int flag)
@@ -52,9 +56,13 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 	if (access(outfile, W_OK) == 0 || errno == ENOENT)
 		pipex->output_file = open(outfile, O_CREAT | O_WRONLY | flag, 0664);
 	else if (errno == EACCES)
+	{
 		pipex->output_file = open("/dev/null", O_CREAT | O_WRONLY | flag, 0664);
+		// print error
+		pipex->last_cmd -= 1;
+	}
 	else
-		return ;//terminate
+		return ;//terminate failure error
 	if (pipex->output_file == -1)
-		return ;//terminate
+		return ;//terminate failure error
 }
