@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 16:39:07 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:26:57 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	make_cmd(t_pipex *pipex, char *argstr, char **envp)
 	cmd->envp = envp;
 }
 
-void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
+void	open_fds(t_pipex *pipex, int argc, char **argv)
 {
 	pipex->last_cmd = argc - 2;
 	if (my_strcmp(argv[1], "here_doc") == 0)
@@ -53,19 +53,17 @@ void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
 		pipex->first_cmd = 3;
 		open_heredoc(pipex, argv[2]);
 		open_outfile(pipex, argv[argc - 1], O_APPEND);
-		pipex->cmd_count = argc - 4;
 	}
 	else
 	{
 		pipex->first_cmd = 2;
 		open_infile(pipex, argv[1]);
 		open_outfile(pipex, argv[argc - 1], O_TRUNC);
-		pipex->cmd_count = argc - 3;
 	}
 	if (pipex->last_cmd < pipex->first_cmd)
-		printf("terminate\n");// return ;//terminate failure no error
-	while (pipex->first_cmd <= pipex->last_cmd)
-		make_cmd(pipex, argv[pipex->first_cmd++], envp);
+		exit(1);//terminate
+	if (pipe(pipex->pipes[0]) == -1 || pipe(pipex->pipes[1]) == -1)
+		exit(1);//terminate;
 }
 
 void	exec_pipex(t_pipex *pipex)
@@ -100,11 +98,14 @@ int	main(int argc, char **argv, char **envp)
 	t_pipex	*pipex;
 
 	if (argc < 4)
-		return (1);//terminate failure error
+		exit(1);//terminate
 	pipex = ft_calloc(1, sizeof(t_pipex));
 	if (pipex == NULL)
-		return (1);//terminate failure error
-	init_pipex(pipex, argc, argv, envp);
+		exit(1);//terminate
+	open_fds(pipex, argc, argv);
+
+	while (pipex->first_cmd <= pipex->last_cmd)
+		make_cmd(pipex, argv[pipex->first_cmd++], envp);
 	exec_pipex(pipex);
 
 	// char	*read;
