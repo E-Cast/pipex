@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/26 12:51:00 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:27:43 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,25 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 		return ;//terminate failure error
 	if (pipex->output_file == -1)
 		return ;//terminate failure error
+}
+
+void	open_fds(t_pipex *pipex, int argc, char **argv)
+{
+	pipex->last_cmd = argc - 2;
+	if (my_strcmp(argv[1], "here_doc") == 0)
+	{
+		pipex->first_cmd = 3;
+		open_heredoc(pipex, argv[2]);
+		open_outfile(pipex, argv[argc - 1], O_APPEND);
+	}
+	else
+	{
+		pipex->first_cmd = 2;
+		open_infile(pipex, argv[1]);
+		open_outfile(pipex, argv[argc - 1], O_TRUNC);
+	}
+	if (pipex->last_cmd < pipex->first_cmd)
+		exit(1);//terminate
+	if (pipe(pipex->pipes[0]) == -1 || pipe(pipex->pipes[1]) == -1)
+		exit(1);//terminate;
 }

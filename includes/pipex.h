@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 16:18:31 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:27:48 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void	cmd_lst_add(t_cmd **cmd_lst, t_cmd *node); // to change
 void	open_heredoc(t_pipex *pipex, char *limiter);
 void	open_infile(t_pipex *pipex, char *infile);
 void	open_outfile(t_pipex *pipex, char *outfile, int flag);
+void	open_fds(t_pipex *pipex, int argc, char **argv);
 
 #endif
