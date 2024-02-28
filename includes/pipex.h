@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 16:27:48 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 17:09:34 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,8 @@
 
 typedef struct s_cmd
 {
-	int				index;
 	char			*path;
 	char			**args;
-	char			**envp;
-	// int				pid;
-	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_pipex
@@ -33,14 +29,11 @@ typedef struct s_pipex
 	int		input_file;
 	int		output_file;
 	int		pipes[2][2];
-
 	int		first_cmd;
 	int		last_cmd;
-	t_cmd	*cmd_lst;
+	t_cmd	**cmd_arr;
+	char	**envp;
 }	t_pipex;
-
-t_cmd	*cmd_lst_last(t_cmd *cmd_lst); // to change
-void	cmd_lst_add(t_cmd **cmd_lst, t_cmd *node); // to change
 
 /*Input and output files.*/
 
@@ -48,5 +41,10 @@ void	open_heredoc(t_pipex *pipex, char *limiter);
 void	open_infile(t_pipex *pipex, char *infile);
 void	open_outfile(t_pipex *pipex, char *outfile, int flag);
 void	open_fds(t_pipex *pipex, int argc, char **argv);
+
+/*Cmd struct.*/
+
+t_cmd	*make_cmd(char *argstr);
+void	make_cmd_array(t_pipex *pipex, char **argv);
 
 #endif

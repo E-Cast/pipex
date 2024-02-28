@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 16:27:34 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 17:08:35 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,38 +24,18 @@ grep
 Hello " World
 */
 
-void	make_cmd(t_pipex *pipex, char *argstr, char **envp)
-{
-	t_cmd	*cmd;
-
-	cmd = ft_calloc(1, sizeof(t_cmd));
-	if (cmd == NULL)
-		return ;//terminate failure error
-	cmd->args = ft_split(argstr, ' ');
-	if (cmd->args == NULL)
-		return ;//terminate failure error
-	cmd->path = ft_strjoin("/usr/bin/", cmd->args[0]);
-	if (cmd->path == NULL)
-		return ;//terminate failure error
-	if (pipex->cmd_lst == NULL)
-		cmd->index = 1;
-	else
-		cmd->index = cmd_lst_last(pipex->cmd_lst)->index + 1;
-	cmd_lst_add(&pipex->cmd_lst, cmd);//to change
-	cmd->envp = envp;
-}
-
 void	exec_pipex(t_pipex *pipex)
 {
-	t_cmd	*command;
+	(void) pipex;
+	// t_cmd	*command;
 
-	command = pipex->cmd_lst;
-	while (command)
-	{
-		printf("%i\n", command->index);
-		printf("%s\n%s\n", command->args[0], command->path);
-		command = command->next;
-	}
+	// command = pipex->cmd_lst;
+	// while (command)
+	// {
+	// 	printf("%i\n", command->index);
+	// 	printf("%s\n%s\n", command->args[0], command->path);
+	// 	command = command->next;
+	// }
 	/*
 	get the pipes
 	while commands to be executed
@@ -82,9 +62,9 @@ int	main(int argc, char **argv, char **envp)
 	if (pipex == NULL)
 		exit(1);//terminate
 	open_fds(pipex, argc, argv);
+	make_cmd_array(pipex, argv);
+	pipex->envp = envp;
 
-	while (pipex->first_cmd <= pipex->last_cmd)
-		make_cmd(pipex, argv[pipex->first_cmd++], envp);
 	exec_pipex(pipex);
 
 	// char	*read;

@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 16:27:43 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:30:36 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 	char	*input;
 
 	if (pipe(hd_pipe) == -1)
-		return ;//terminate failure error
+		exit(1);//terminate
 	ft_putstr_fd("heredoc> ", STDOUT_FILENO);
 	input = get_next_line(STDIN_FILENO);
 	while (input != NULL)
@@ -46,9 +46,9 @@ void	open_infile(t_pipex *pipex, char *infile)
 		pipex->first_cmd += 1;
 	}
 	else
-		return ;//terminate failure error
+		exit(1);//terminate
 	if (pipex->output_file == -1)
-		return ;//terminate failure error
+		exit(1);//terminate
 }
 
 void	open_outfile(t_pipex *pipex, char *outfile, int flag)
@@ -62,9 +62,9 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 		pipex->last_cmd -= 1;
 	}
 	else
-		return ;//terminate failure error
+		exit(1);//terminate
 	if (pipex->output_file == -1)
-		return ;//terminate failure error
+		exit(1);//terminate
 }
 
 void	open_fds(t_pipex *pipex, int argc, char **argv)

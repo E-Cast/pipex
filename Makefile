@@ -1,7 +1,6 @@
 SRC				=	main.c \
 					fd.c \
-					lst.c \
-					args.c \
+					cmd.c \
 
 SRC_DIR			:=	sources/
 OBJ_DIR			:=	objects/
