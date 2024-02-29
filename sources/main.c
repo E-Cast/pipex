@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 23:08:40 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/29 03:03:08 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,66 @@ grep
 Hello " World
 */
 
+// typedef struct s_cmd
+// {
+// 	char	*path;
+// 	char	**args;
+// 	pid_t	pid;
+// }	t_cmd;
+
+// typedef struct s_pipex
+// {
+// 	t_cmd	**cmd_arr;
+// 	char	**envp;
+// }	t_pipex;
+
 void	close_all(t_pipex *pipex)
 {
-	close(pipex->input_file);
-	close(pipex->output_file);
-	close(pipex->pipes[0][1]);
-	close(pipex->pipes[0][0]);
-	close(pipex->pipes[1][1]);
-	close(pipex->pipes[1][0]);
+	if (pipex->input_file != -1)
+		close(pipex->input_file);
+	if (pipex->output_file != -1)
+		close(pipex->output_file);
+	if (pipex->pipes[0][1] != -1)
+		close(pipex->pipes[0][1]);
+	if (pipex->pipes[0][0] != -1)
+		close(pipex->pipes[0][0]);
+	if (pipex->pipes[1][1] != -1)
+		close(pipex->pipes[1][1]);
+	if (pipex->pipes[1][0] != -1)
+		close(pipex->pipes[1][0]);
+	pipex->input_file = -1;
+	pipex->output_file = -1;
+	pipex->pipes[0][1] = -1;
+	pipex->pipes[0][0] = -1;
+	pipex->pipes[1][1] = -1;
+	pipex->pipes[1][0] = -1;
+}
+
+void	free_cmd(t_cmd *cmd_arr)
+{
+	int	index;
+
+	index = 0;
+	while (cmd_arr[index] != NULL)
+	{
+		waitpid(cmd_arr->);
+		index++;
+	}
+}
+
+void	terminate(t_pipex *pipex, int code)
+{
+	int	index;
+
+	close_all(pipex);
+	if (pipex->cmd_arr)
+	{
+		//wait all pid
+		//free every cmd
+		//free 
+	}
+	
+	exit(code);
 }
 
 int	main(int argc, char **argv, char **envp)
