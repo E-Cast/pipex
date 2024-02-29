@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 16:30:36 by ecast            ###   ########.fr       */
+/*   Updated: 2024/02/28 23:09:20 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 			break ;
 		ft_putstr_fd(input, hd_pipe[1]);
 		my_safefree(input);
-		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
+		ft_putstr_fd("heredoc> ", STDOUT_FILENO); //placeholder, must add 'pipe ' for every pipe in the chain
 		input = get_next_line(STDIN_FILENO);
 	}
 	my_safefree(input);
