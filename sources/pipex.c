@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:39:12 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:12:16 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	exec_cmd(t_pipex *pipex, int index, int input, int output)
 	dup2(output, STDOUT_FILENO);
 	close_all(pipex);
 	execve(pipex->path[index], pipex->args[index], pipex->envp);
-	exit(1);//terminate
+	terminate(pipex, EXIT_FAILURE);//terminate
 }
 
 
@@ -61,7 +61,7 @@ void	exec_pipex(t_pipex *pipex)
 		output = get_output(pipex, index);
 		pipex->pid[index] = fork();
 		if (pipex->pid[index] == -1)
-			exit(1);//terminate? error
+			terminate(pipex, EXIT_FAILURE);//terminate
 		if (pipex->pid[index] == 0)
 			exec_cmd(pipex, index, input, output);
 		index++;

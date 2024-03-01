@@ -10,7 +10,7 @@ SRC				:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJ				:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
 NAME			:=	pipex
 
-# DEBUG			:=	-g 
+DEBUG			:=	-g 
 CC				:=	gcc -Wall -Werror -Wextra $(DEBUG)
 INC_DIR			:= 	includes
 INCLUDES		:=	-I $(INC_DIR) -I libft/includes

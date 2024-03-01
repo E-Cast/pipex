@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:57:52 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:05:24 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	open_infile(t_pipex *pipex, char *infile)
 	else if (errno == ENOENT || errno == EACCES)
 	{
 		pipex->input_file = open("/dev/null", O_RDONLY);
-		// print error
+		ft_putstr_fd("pipex: permission denied: ", STDERR_FILENO);
+		ft_putendl_fd(infile, STDERR_FILENO);
 		pipex->first_cmd += 1;
 	}
 	else
@@ -68,7 +69,8 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 	else if (errno == EACCES)
 	{
 		pipex->output_file = open("/dev/null", O_CREAT | O_WRONLY | flag, 0664);
-		// print error
+		ft_putstr_fd("pipex: permission denied: ", STDERR_FILENO);
+		ft_putendl_fd(outfile, STDERR_FILENO);
 		pipex->last_cmd -= 1;
 	}
 	else
