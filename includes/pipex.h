@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/29 02:43:39 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:32:31 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 # include "libft.h"
 # include <errno.h>
 # include <stdbool.h>
-# include <stdio.h> //
-
-typedef struct s_cmd
-{
-	char	*path;
-	char	**args;
-	pid_t	pid;
-}	t_cmd;
+# include <stdio.h>
+# include <sys/wait.h>
 
 typedef struct s_pipex
 {
 	int		input_file;
 	int		output_file;
 	int		pipes[2][2];
+
 	int		first_cmd;
 	int		last_cmd;
-	t_cmd	**cmd_arr;
 	char	**envp;
+
+	char	**path;
+	char	***args;
+	pid_t	*pid;
+
+	int		exit_code;
 }	t_pipex;
 
 /*Input and output files.*/
@@ -44,14 +44,16 @@ void	open_fds(t_pipex *pipex, int argc, char **argv);
 
 /*Cmd struct.*/
 
-t_cmd	*make_cmd(char *argstr);
-void	make_cmd_array(t_pipex *pipex, char **argv);
+void	make_cmd(t_pipex *pipex, int index, char *argstr);
+void	make_cmd_arrays(t_pipex *pipex, char **argv);
 
 /**/
 
 int		get_input(t_pipex *pipex, int index);
 int		get_output(t_pipex *pipex, int index);
-void	exec_cmd(t_pipex *pipex, t_cmd *cmd, int infd, int outfd);
+void	exec_cmd(t_pipex *pipex, int index, int input, int output);
 void	exec_pipex(t_pipex *pipex);
+
+void	close_all(t_pipex *pipex);
 
 #endif

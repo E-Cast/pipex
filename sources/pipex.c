@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 23:08:43 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:32:39 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_output(t_pipex *pipex, int index)
 {
 	int	output;
 
-	if (pipex->cmd_arr[index + 1] == NULL)
+	if (pipex->args[index + 1] == NULL)
 		output = pipex->output_file;
 	else if ((index % 2) == 0)
 		output = pipex->pipes[0][1];
@@ -38,12 +38,12 @@ int	get_output(t_pipex *pipex, int index)
 	return (output);
 }
 
-void	exec_cmd(t_pipex *pipex, t_cmd *cmd, int infd, int outfd)
+void	exec_cmd(t_pipex *pipex, int index, int input, int output)
 {
-	dup2(infd, STDIN_FILENO);
-	dup2(outfd, STDOUT_FILENO);
+	dup2(input, STDIN_FILENO);
+	dup2(output, STDOUT_FILENO);
 	close_all(pipex);
-	execve(cmd->path, cmd->args, pipex->envp);
+	execve(pipex->path[index], pipex->args[index], pipex->envp);
 	exit(1);//terminate
 }
 
@@ -52,26 +52,24 @@ void	exec_pipex(t_pipex *pipex)
 	int	index;
 	int	input;
 	int	output;
-	int	status;
 
 	index = 0;
-	while (pipex->cmd_arr[index])
+	while (pipex->args[index])
 	{
 		input = get_input(pipex, index);
 		output = get_output(pipex, index);
-		pipex->cmd_arr[index]->pid = fork();
-		if (pipex->cmd_arr[index]->pid == -1)
+		pipex->pid[index] = fork();
+		if (pipex->pid[index] == -1)
 			exit(1);//terminate? error
-		if (pipex->cmd_arr[index]->pid == 0)
-			exec_cmd(pipex, pipex->cmd_arr[index], input, output);
+		if (pipex->pid[index] == 0)
+			exec_cmd(pipex, index, input, output);
 		index++;
 	}
 	close_all(pipex);
 	index = 0;
-	while (pipex->cmd_arr[index])
+	while (pipex->args[index])
 	{
-		waitpid(pipex->cmd_arr[index]->pid, &status, 0);
+		waitpid(pipex->pid[index], &pipex->exit_code, 0);
 		index++;
 	}
-	exit(status);//terminate status
 }

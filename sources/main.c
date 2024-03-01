@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/29 03:03:08 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:33:03 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,32 +60,32 @@ void	close_all(t_pipex *pipex)
 	pipex->pipes[1][0] = -1;
 }
 
-void	free_cmd(t_cmd *cmd_arr)
-{
-	int	index;
+// void	free_cmd(t_cmd *cmd_arr)
+// {
+// 	int	index;
 
-	index = 0;
-	while (cmd_arr[index] != NULL)
-	{
-		waitpid(cmd_arr->);
-		index++;
-	}
-}
+// 	index = 0;
+// 	while (cmd_arr[index] != NULL)
+// 	{
+// 		waitpid(cmd_arr->);
+// 		index++;
+// 	}
+// }
 
-void	terminate(t_pipex *pipex, int code)
-{
-	int	index;
+// void	terminate(t_pipex *pipex, int code)
+// {
+// 	int	index;
 
-	close_all(pipex);
-	if (pipex->cmd_arr)
-	{
-		//wait all pid
-		//free every cmd
-		//free 
-	}
+// 	close_all(pipex);
+// 	if (pipex->cmd_arr)
+// 	{
+// 		//wait all pid
+// 		//free every cmd
+// 		//free 
+// 	}
 	
-	exit(code);
-}
+// 	exit(code);
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -97,7 +97,8 @@ int	main(int argc, char **argv, char **envp)
 	if (pipex == NULL)
 		exit(1);//terminate
 	open_fds(pipex, argc, argv);
-	make_cmd_array(pipex, argv);
+	make_cmd_arrays(pipex, argv);
 	pipex->envp = envp;
 	exec_pipex(pipex);
+	exit(pipex->exit_code);
 }
