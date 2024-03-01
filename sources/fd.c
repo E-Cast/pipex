@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/02/28 23:09:20 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 07:40:39 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,26 @@ void	open_fds(t_pipex *pipex, int argc, char **argv)
 		exit(1);//terminate
 	if (pipe(pipex->pipes[0]) == -1 || pipe(pipex->pipes[1]) == -1)
 		exit(1);//terminate;
+}
+
+void	close_all(t_pipex *pipex)
+{
+	if (pipex->input_file != -1)
+		close(pipex->input_file);
+	if (pipex->output_file != -1)
+		close(pipex->output_file);
+	if (pipex->pipes[0][1] != -1)
+		close(pipex->pipes[0][1]);
+	if (pipex->pipes[0][0] != -1)
+		close(pipex->pipes[0][0]);
+	if (pipex->pipes[1][1] != -1)
+		close(pipex->pipes[1][1]);
+	if (pipex->pipes[1][0] != -1)
+		close(pipex->pipes[1][0]);
+	pipex->input_file = -1;
+	pipex->output_file = -1;
+	pipex->pipes[0][1] = -1;
+	pipex->pipes[0][0] = -1;
+	pipex->pipes[1][1] = -1;
+	pipex->pipes[1][0] = -1;
 }
