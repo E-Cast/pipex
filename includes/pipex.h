@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:40:25 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 07:59:14 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ typedef struct s_pipex
 
 /*File descriptors.*/
 
+void	put_heredoc(t_pipex *pipex);
 void	open_heredoc(t_pipex *pipex, char *limiter);
 void	open_infile(t_pipex *pipex, char *infile);
 void	open_outfile(t_pipex *pipex, char *outfile, int flag);
 void	open_fds(t_pipex *pipex, int argc, char **argv);
-void	close_all(t_pipex *pipex);
 
 /*Cmd struct.*/
 
@@ -57,6 +57,7 @@ void	exec_pipex(t_pipex *pipex);
 
 /*Utility and cleanup.*/
 
+void	close_all(t_pipex *pipex);
 void	wait_all(t_pipex *pipex);
 void	free_all(t_pipex *pipex);
 void	terminate(t_pipex *pipex, int code);

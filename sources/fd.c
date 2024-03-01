@@ -6,11 +6,21 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:40:39 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 07:57:52 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	put_heredoc(t_pipex *pipex)
+{
+	int	count;
+
+	count = (pipex->last_cmd - (pipex->first_cmd - 1) - 2);
+	while (count--)
+		ft_putstr_fd("pipe ", STDOUT_FILENO);
+	ft_putstr_fd("pipe heredoc> ", STDOUT_FILENO);
+}
 
 void	open_heredoc(t_pipex *pipex, char *limiter)
 {
@@ -18,8 +28,8 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 	char	*input;
 
 	if (pipe(hd_pipe) == -1)
-		exit(1);//terminate
-	ft_putstr_fd("heredoc> ", STDOUT_FILENO);
+		terminate(pipex, EXIT_FAILURE);//terminate
+	put_heredoc(pipex);
 	input = get_next_line(STDIN_FILENO);
 	while (input != NULL)
 	{
@@ -27,7 +37,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 			break ;
 		ft_putstr_fd(input, hd_pipe[1]);
 		my_safefree(input);
-		ft_putstr_fd("heredoc> ", STDOUT_FILENO); //placeholder, must add 'pipe ' for every pipe in the chain
+		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
 		input = get_next_line(STDIN_FILENO);
 	}
 	my_safefree(input);
@@ -46,9 +56,9 @@ void	open_infile(t_pipex *pipex, char *infile)
 		pipex->first_cmd += 1;
 	}
 	else
-		exit(1);//terminate
+		terminate(pipex, EXIT_FAILURE);//terminate
 	if (pipex->output_file == -1)
-		exit(1);//terminate
+		terminate(pipex, EXIT_FAILURE);//terminate
 }
 
 void	open_outfile(t_pipex *pipex, char *outfile, int flag)
@@ -62,9 +72,9 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 		pipex->last_cmd -= 1;
 	}
 	else
-		exit(1);//terminate
+		terminate(pipex, EXIT_FAILURE);//terminate
 	if (pipex->output_file == -1)
-		exit(1);//terminate
+		terminate(pipex, EXIT_FAILURE);//terminate
 }
 
 void	open_fds(t_pipex *pipex, int argc, char **argv)
@@ -83,29 +93,8 @@ void	open_fds(t_pipex *pipex, int argc, char **argv)
 		open_outfile(pipex, argv[argc - 1], O_TRUNC);
 	}
 	if (pipex->last_cmd < pipex->first_cmd)
-		exit(1);//terminate
+		terminate(pipex, EXIT_FAILURE);//terminate
 	if (pipe(pipex->pipes[0]) == -1 || pipe(pipex->pipes[1]) == -1)
-		exit(1);//terminate;
+		terminate(pipex, EXIT_FAILURE);//terminate
 }
 
-void	close_all(t_pipex *pipex)
-{
-	if (pipex->input_file != -1)
-		close(pipex->input_file);
-	if (pipex->output_file != -1)
-		close(pipex->output_file);
-	if (pipex->pipes[0][1] != -1)
-		close(pipex->pipes[0][1]);
-	if (pipex->pipes[0][0] != -1)
-		close(pipex->pipes[0][0]);
-	if (pipex->pipes[1][1] != -1)
-		close(pipex->pipes[1][1]);
-	if (pipex->pipes[1][0] != -1)
-		close(pipex->pipes[1][0]);
-	pipex->input_file = -1;
-	pipex->output_file = -1;
-	pipex->pipes[0][1] = -1;
-	pipex->pipes[0][0] = -1;
-	pipex->pipes[1][1] = -1;
-	pipex->pipes[1][0] = -1;
-}

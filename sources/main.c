@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:38:09 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/01 07:47:02 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc < 5)
 	{
-		ft_putendl_fd("error: too few arguments", STDERR_FILENO);
+		ft_putendl_fd("pipex error: too few arguments", STDERR_FILENO);
 		return (1);
 	}
 	pipex = ft_calloc(1, sizeof(t_pipex));
