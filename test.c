@@ -1,26 +1,6 @@
 #include <stdio.h>
 #include "libft.h"
 
-// char	*ft_substr(char *str, int start, int len)
-// {
-// 	char	*sub_str;
-// 	char	*str_ptr;
-// 	size_t	i;
-
-// 	sub_str = (char *)ft_calloc(len + 1, sizeof(char));
-// 	if (!sub_str)
-// 		// terminate
-// 	str_ptr = (char *)str;
-// 	i = 0;
-// 	while (i < len)
-// 	{
-// 		sub_str[i] = str_ptr[start + i];
-// 		i++;
-// 	}
-// 	sub_str[i] = '\0';
-// 	return (sub_str);
-// }
-
 char	*make_segment(char *str, int start, int end)
 {
 	char	*segment;
@@ -105,13 +85,9 @@ int	main(int argc, char **argv)
 	char	**array;
 	int		index;
 
-	printf("%s\n%i\n", argv[argc - 1], count_segments(argv[argc - 1]));
 	array = ft_calloc(count_segments(argv[argc - 1]) + 1, sizeof(char *));
-	if (array )
+	if (array == NULL)
+		return (1); //terminate
 	segment_str(array, argv[argc - 1]);
-	index = 0;
-	while (array && array[index])
-		printf("%s\n", array[index++]);
-
-	// printf("%s\n" )
+	printf("%s\n%s\n", array[0], array[1]);
 }

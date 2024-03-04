@@ -6,15 +6,97 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:30:52 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:47:37 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/03 20:03:06 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+char	*make_segment(t_pipex *pipex, char *str, int start, int end)
+{
+	char	*segment;
+	int		str_inx;
+	int		seg_inx;
+	char	quote;
+
+	segment = ft_calloc((end - start) + 1, sizeof(char));
+	if (segment == NULL)
+		terminate(pipex, EXIT_FAILURE);//terminate
+	str_inx = start;
+	seg_inx = 0;
+	quote = 0;
+	while (str_inx < end)
+	{
+		if (quote == 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
+			quote = str[str_inx];
+		else if (quote != 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
+			quote = 0;
+		else
+			segment[seg_inx++] = str[str_inx];
+		str_inx++;
+	}
+	my_strrealloc(&segment);
+	return (segment);
+}
+
+char	**segment_str(t_pipex *pipex, char **array, char *str)
+{
+	char	quote;
+	int		start;
+	int		str_inx;
+
+	quote = 0;
+	start = 0;
+	str_inx = 0;
+	while (str[str_inx] != 0)
+	{
+		if (str[str_inx] == ' ' && quote == 0)
+		{
+			*array = make_segment(pipex, str, start, str_inx);
+			array++;
+			start = str_inx + 1;
+		}
+		else if (quote == 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
+			quote = str[str_inx];
+		else if (quote != 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
+			quote = 0;
+		str_inx++;
+	}
+	if (start != str_inx)
+		*array = make_segment(pipex, str, start, str_inx);
+	return (array);
+}
+
+int	count_segments(char *str)
+{
+	int		count;
+	char	quote;
+	int		ix;
+
+	count = 1;
+	quote = 0;
+	ix = 0;
+	while (str[ix] != 0)
+	{
+		if (str[ix] == ' ' && quote == 0)
+			count++;
+		else if (quote == 0 && (str[ix] == '\'' || str[ix] == '\"'))
+			quote = str[ix];
+		else if (quote != 0 && (str[ix] == '\'' || str[ix] == '\"'))
+			quote = 0;
+		else if ((quote == '\"' || quote == 0) && str[ix] == '\\')
+			ix++;
+		ix++;
+	}
+	return (count);
+}
+
 void	make_cmd(t_pipex *pipex, int index, char *argstr)
 {
-	pipex->args[index] = ft_split(argstr, ' '); //placeholder
+	pipex->args[index] = ft_calloc(count_segments(argstr) + 1, sizeof(char *));
+	if (pipex->args[index] == NULL)
+		terminate(pipex, EXIT_FAILURE);//terminate
+	segment_str(pipex, pipex->args[index], argstr);
 	if (pipex->args[index] == NULL)
 		terminate(pipex, EXIT_FAILURE);//terminate
 	pipex->path[index] = ft_strjoin("/usr/bin/", pipex->args[index][0]);
