@@ -6,23 +6,11 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:47:02 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 07:40:15 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-/*
-./pipex "grep 'Hello \' World"
-grep
-'hello \'
-world
-*/
-/*
-./pipex 'grep "Hello \" World"'
-grep
-Hello " World
-*/
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -30,12 +18,15 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc < 5)
 	{
-		ft_putendl_fd("pipex error: too few arguments", STDERR_FILENO);
+		ft_putendl_fd("pipex: too few arguments", STDERR_FILENO);
 		return (1);
 	}
 	pipex = ft_calloc(1, sizeof(t_pipex));
 	if (pipex == NULL)
+	{
+		perror("pipex");
 		return (1);
+	}
 	open_fds(pipex, argc, argv);
 	make_cmd_arrays(pipex, argv);
 	pipex->envp = envp;
