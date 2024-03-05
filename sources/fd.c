@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:01:56 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:21:18 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 	char	*input;
 
 	if (pipe(hd_pipe) == -1)
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: pipe");//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: pipe");
 	put_heredoc(pipex);
 	input = get_next_line(STDIN_FILENO);
 	while (input != NULL)
@@ -57,9 +57,9 @@ void	open_infile(t_pipex *pipex, char *infile)
 		pipex->first_cmd += 1;
 	}
 	else
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");//terminate
-	if (pipex->output_file == -1)
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");
+	if (pipex->input_file == -1)
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");
 }
 
 void	open_outfile(t_pipex *pipex, char *outfile, int flag)
@@ -74,9 +74,9 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 		pipex->last_cmd -= 1;
 	}
 	else
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");
 	if (pipex->output_file == -1)
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");
 }
 
 void	open_fds(t_pipex *pipex, int argc, char **argv)
@@ -97,5 +97,5 @@ void	open_fds(t_pipex *pipex, int argc, char **argv)
 	if (pipex->last_cmd < pipex->first_cmd)
 		terminate(pipex, EXIT_FAILURE, 0, NULL);
 	if (pipe(pipex->pipes[0]) == -1 || pipe(pipex->pipes[1]) == -1)
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: pipe");//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: pipe");
 }
