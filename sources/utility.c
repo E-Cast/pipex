@@ -6,12 +6,13 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 07:38:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 07:54:53 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:58:48 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*Closes every file descriptor stored in pipex and sets their value to -1.*/
 void	close_all(t_pipex *pipex)
 {
 	if (pipex->input_file != -1)
@@ -34,6 +35,8 @@ void	close_all(t_pipex *pipex)
 	pipex->pipes[1][0] = -1;
 }
 
+/*Waits for every process stored in pipex to finish, 
+	returns the status of the last process.*/
 int	wait_all(t_pipex *pipex)
 {
 	int	index;
@@ -49,6 +52,8 @@ int	wait_all(t_pipex *pipex)
 	return (status);
 }
 
+/*Calls close_all and wait_all then safely frees all 
+	the dynamically allocated memory stored in pipex.*/
 void	free_all(t_pipex *pipex)
 {
 	int	index;
@@ -74,6 +79,8 @@ void	free_all(t_pipex *pipex)
 	my_safefree(pipex);
 }
 
+/*Calls free_all and then calls perror with the specified prefix 
+	and errno if applicable, then exits with exit_code.*/
 void	terminate(t_pipex *pipex, int exit_code, int error, char *prefix)
 {
 	free_all(pipex);

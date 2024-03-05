@@ -6,12 +6,13 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:23:55 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:52:23 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*Finds and returns the needed input file descriptor.*/
 int	get_input(t_pipex *pipex, int index)
 {
 	int	input;
@@ -25,6 +26,7 @@ int	get_input(t_pipex *pipex, int index)
 	return (input);
 }
 
+/*Finds and returns the needed output file descriptor.*/
 int	get_output(t_pipex *pipex, int index)
 {
 	int	output;
@@ -38,6 +40,8 @@ int	get_output(t_pipex *pipex, int index)
 	return (output);
 }
 
+/*Executes the command whose args and path are located 
+	at the index using the specified file descriptors.*/
 void	exec_cmd(t_pipex *pipex, int index, int input, int output)
 {
 	dup2(input, STDIN_FILENO);
@@ -47,6 +51,7 @@ void	exec_cmd(t_pipex *pipex, int index, int input, int output)
 	exit(1);
 }
 
+/*Executes every command stored in the args and path arrays the returns.*/
 int	exec_pipex(t_pipex *pipex)
 {
 	int	index;

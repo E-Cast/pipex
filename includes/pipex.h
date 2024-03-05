@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:44:38 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:48:23 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <sys/wait.h>
 
+/*Struct used to pass all relevant data in the program 
+	and ensure no leaks are created when terminating.*/
 typedef struct s_pipex
 {
 	int		input_file;
