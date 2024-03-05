@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:02:51 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:23:55 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	exec_pipex(t_pipex *pipex)
 		output = get_output(pipex, index);
 		pipex->pid[index] = fork();
 		if (pipex->pid[index] == -1)
-			terminate(pipex, EXIT_FAILURE, errno, "pipex: fork");//terminate
+			terminate(pipex, EXIT_FAILURE, errno, "pipex: fork");
 		if (pipex->pid[index] == 0)
 			exec_cmd(pipex, index, input, output);
 		index++;
