@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 07:38:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 07:24:00 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 07:54:53 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@ void	close_all(t_pipex *pipex)
 	pipex->pipes[1][0] = -1;
 }
 
-void	wait_all(t_pipex *pipex)
+int	wait_all(t_pipex *pipex)
 {
 	int	index;
+	int	status;
 
 	index = 0;
 	while (pipex->args && pipex->args[index])
 	{
 		if (pipex->pid[index] != 0)
-			waitpid(pipex->pid[index], &pipex->exit_code, 0);
+			waitpid(pipex->pid[index], &status, 0);
 		index++;
 	}
+	return (status);
 }
 
 void	free_all(t_pipex *pipex)
@@ -72,12 +74,13 @@ void	free_all(t_pipex *pipex)
 	my_safefree(pipex);
 }
 
-void	terminate(t_pipex *pipex, int code)
+void	terminate(t_pipex *pipex, int exit_code, int error, char *prefix)
 {
-	int	error_code;
-
-	error_code = errno;
 	free_all(pipex);
-	errno = error_code;
-	exit(code);
+	if (prefix != NULL)
+	{
+		errno = error;
+		perror(prefix);
+	}
+	exit(exit_code);
 }

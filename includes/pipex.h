@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/01 07:59:14 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 07:55:03 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ typedef struct s_pipex
 	char	**path;
 	char	***args;
 	pid_t	*pid;
-
-	int		exit_code;
 }	t_pipex;
 
 /*File descriptors.*/
@@ -53,13 +51,13 @@ void	make_cmd_arrays(t_pipex *pipex, char **argv);
 int		get_input(t_pipex *pipex, int index);
 int		get_output(t_pipex *pipex, int index);
 void	exec_cmd(t_pipex *pipex, int index, int input, int output);
-void	exec_pipex(t_pipex *pipex);
+int		exec_pipex(t_pipex *pipex);
 
 /*Utility and cleanup.*/
 
 void	close_all(t_pipex *pipex);
-void	wait_all(t_pipex *pipex);
+int		wait_all(t_pipex *pipex);
 void	free_all(t_pipex *pipex);
-void	terminate(t_pipex *pipex, int code);
+void	terminate(t_pipex *pipex, int exit_code, int error, char *prefix);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 07:40:15 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 07:55:17 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ int	main(int argc, char **argv, char **envp)
 	pipex = ft_calloc(1, sizeof(t_pipex));
 	if (pipex == NULL)
 	{
-		perror("pipex");
+		perror("pipex: ft_calloc");
 		return (1);
 	}
 	open_fds(pipex, argc, argv);
 	make_cmd_arrays(pipex, argv);
 	pipex->envp = envp;
-	exec_pipex(pipex);
-	terminate(pipex, pipex->exit_code);
+	terminate(pipex, exec_pipex(pipex), 0, NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:30:52 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 07:34:52 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:07:07 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*make_segment(t_pipex *pipex, char *str, int start, int end)
 
 	segment = ft_calloc((end - start) + 1, sizeof(char));
 	if (segment == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_calloc");//terminate
 	str_inx = start;
 	seg_inx = 0;
 	quote = 0;
@@ -36,6 +36,8 @@ char	*make_segment(t_pipex *pipex, char *str, int start, int end)
 		str_inx++;
 	}
 	my_strrealloc(&segment);
+	if (segment == NULL)
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: my_strrealloc");//terminate
 	return (segment);
 }
 
@@ -95,13 +97,11 @@ void	make_cmd(t_pipex *pipex, int index, char *argstr)
 {
 	pipex->args[index] = ft_calloc(count_segments(argstr) + 1, sizeof(char *));
 	if (pipex->args[index] == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_calloc");//terminate
 	segment_str(pipex, pipex->args[index], argstr);
-	if (pipex->args[index] == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
 	pipex->path[index] = ft_strjoin("/usr/bin/", pipex->args[index][0]);
 	if (pipex->path[index] == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_strjoin");//terminate
 }
 
 void	make_cmd_arrays(t_pipex *pipex, char **argv)
@@ -113,13 +113,13 @@ void	make_cmd_arrays(t_pipex *pipex, char **argv)
 	cmd_count = pipex->last_cmd - (pipex->first_cmd - 1);
 	pipex->args = ft_calloc(cmd_count + 1, sizeof(char **));
 	if (pipex->args == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_calloc");//terminate
 	pipex->path = ft_calloc(cmd_count + 1, sizeof(char *));
 	if (pipex->path == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_calloc");//terminate
 	pipex->pid = ft_calloc(cmd_count + 1, sizeof(char *));
 	if (pipex->pid == NULL)
-		terminate(pipex, EXIT_FAILURE);//terminate
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_calloc");//terminate
 	argv_index = pipex->first_cmd;
 	arr_index = 0;
 	while (argv_index <= pipex->last_cmd)
