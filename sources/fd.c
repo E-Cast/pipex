@@ -6,12 +6,14 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:21:18 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:46:55 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*Prints the required amount of "pipe " to 
+	stdout followed by "pipe heredoc> ".*/
 void	put_heredoc(t_pipex *pipex)
 {
 	int	count;
@@ -22,7 +24,10 @@ void	put_heredoc(t_pipex *pipex)
 	ft_putstr_fd("pipe heredoc> ", STDOUT_FILENO);
 }
 
-void	open_heredoc(t_pipex *pipex, char *limiter)
+/*Emulates zsh's here document: It takes strings as input from 
+	the terminal until it receives the delimiter and puts those 
+	strings in a pipe. It then sets that pipe as input file in pipex.*/
+void	open_heredoc(t_pipex *pipex, char *delimiter)
 {
 	int		hd_pipe[2];
 	char	*input;
@@ -33,7 +38,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 	input = get_next_line(STDIN_FILENO);
 	while (input != NULL)
 	{
-		if (ft_strncmp(input, limiter, ft_strlen(input) - 1) == 0)
+		if (ft_strncmp(input, delimiter, ft_strlen(input) - 1) == 0)
 			break ;
 		ft_putstr_fd(input, hd_pipe[1]);
 		my_safefree(input);
@@ -45,6 +50,7 @@ void	open_heredoc(t_pipex *pipex, char *limiter)
 	pipex->input_file = hd_pipe[0];
 }
 
+/*Opens and sets the input file while handling any error that might come up.*/
 void	open_infile(t_pipex *pipex, char *infile)
 {
 	if (access(infile, R_OK) == 0)
@@ -62,6 +68,7 @@ void	open_infile(t_pipex *pipex, char *infile)
 		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");
 }
 
+/*Opens and sets the output file while handling any error that might come up.*/
 void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 {
 	if (access(outfile, W_OK) == 0 || errno == ENOENT)
@@ -79,6 +86,7 @@ void	open_outfile(t_pipex *pipex, char *outfile, int flag)
 		terminate(pipex, EXIT_FAILURE, errno, "pipex: open");
 }
 
+/*Calls all the relevant open_ functions and opens the pipes needed by pipex.*/
 void	open_fds(t_pipex *pipex, int argc, char **argv)
 {
 	pipex->last_cmd = argc - 2;

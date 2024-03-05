@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 07:55:03 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/05 08:44:38 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,16 @@ typedef struct s_pipex
 /*File descriptors.*/
 
 void	put_heredoc(t_pipex *pipex);
-void	open_heredoc(t_pipex *pipex, char *limiter);
+void	open_heredoc(t_pipex *pipex, char *delimiter);
 void	open_infile(t_pipex *pipex, char *infile);
 void	open_outfile(t_pipex *pipex, char *outfile, int flag);
 void	open_fds(t_pipex *pipex, int argc, char **argv);
 
-/*Cmd struct.*/
+/*Parsing and preparation of commands.*/
 
+char	*make_segment(t_pipex *pipex, char *str, int start, int end);
+char	**segment_str(t_pipex *pipex, char **array, char *str);
+int		count_segments(char *str);
 void	make_cmd(t_pipex *pipex, int index, char *argstr);
 void	make_cmd_arrays(t_pipex *pipex, char **argv);
 
