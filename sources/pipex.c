@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:52:23 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 17:06:39 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,5 @@ int	exec_pipex(t_pipex *pipex)
 			exec_cmd(pipex, index, input, output);
 		index++;
 	}
-	close_all(pipex);
-	return (wait_all(pipex));
+	return (free_all(pipex));
 }

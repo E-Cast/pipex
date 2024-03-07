@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 07:38:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:58:48 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 17:07:54 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	wait_all(t_pipex *pipex)
 	index = 0;
 	while (pipex->args && pipex->args[index])
 	{
+		printf("pid:%i\n", pipex->pid[index]);
 		if (pipex->pid[index] != 0)
 			waitpid(pipex->pid[index], &status, 0);
 		index++;
@@ -53,14 +54,16 @@ int	wait_all(t_pipex *pipex)
 }
 
 /*Calls close_all and wait_all then safely frees all 
-	the dynamically allocated memory stored in pipex.*/
-void	free_all(t_pipex *pipex)
+	the dynamically allocated memory stored in pipex.
+	Returns the status of the last pid if applicable.*/
+int	free_all(t_pipex *pipex)
 {
 	int	index;
 	int	index_2;
+	int	status;
 
 	close_all(pipex);
-	wait_all(pipex);
+	status = wait_all(pipex);
 	my_safefree(pipex->pid);
 	index = 0;
 	while (pipex->path && pipex->path[index])
@@ -77,6 +80,7 @@ void	free_all(t_pipex *pipex)
 	}
 	my_safefree(pipex->args);
 	my_safefree(pipex);
+	return (status);
 }
 
 /*Calls free_all and then calls perror with the specified prefix 

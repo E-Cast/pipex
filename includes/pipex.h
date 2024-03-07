@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 16:35:26 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 17:05:49 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		exec_pipex(t_pipex *pipex);
 
 void	close_all(t_pipex *pipex);
 int		wait_all(t_pipex *pipex);
-void	free_all(t_pipex *pipex);
+int		free_all(t_pipex *pipex);
 void	terminate(t_pipex *pipex, int exit_code, int error, char *prefix);
 
 #endif

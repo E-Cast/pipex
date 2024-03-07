@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:45:15 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 16:33:34 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 17:06:35 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ int	main(int argc, char **argv, char **envp)
 	open_fds(pipex, argc, argv);
 	make_arrays(pipex, argv);
 	pipex->envp = envp;
-	terminate(pipex, exec_pipex(pipex), 0, NULL);
+	return (exec_pipex(pipex));
 }
