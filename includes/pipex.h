@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:48:23 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 16:35:26 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	open_fds(t_pipex *pipex, int argc, char **argv);
 char	*make_segment(t_pipex *pipex, char *str, int start, int end);
 char	**segment_str(t_pipex *pipex, char **array, char *str);
 int		count_segments(char *str);
-void	make_cmd(t_pipex *pipex, int index, char *argstr);
-void	make_cmd_arrays(t_pipex *pipex, char **argv);
+void	fill_array(t_pipex *pipex, int index, char *argstr);
+void	make_arrays(t_pipex *pipex, char **argv);
 
 /*Execution of commands.*/
 

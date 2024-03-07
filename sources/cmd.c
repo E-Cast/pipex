@@ -6,12 +6,13 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:30:52 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/05 08:32:55 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 16:36:58 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*Creates the specified segment.*/
 char	*make_segment(t_pipex *pipex, char *str, int start, int end)
 {
 	char	*segment;
@@ -41,6 +42,7 @@ char	*make_segment(t_pipex *pipex, char *str, int start, int end)
 	return (segment);
 }
 
+/*Seperates a string in segments.*/
 char	**segment_str(t_pipex *pipex, char **array, char *str)
 {
 	char	quote;
@@ -69,6 +71,7 @@ char	**segment_str(t_pipex *pipex, char **array, char *str)
 	return (array);
 }
 
+/*Counts the number of segments in a str and returns it.*/
 int	count_segments(char *str)
 {
 	int		count;
@@ -93,7 +96,8 @@ int	count_segments(char *str)
 	return (count);
 }
 
-void	make_cmd(t_pipex *pipex, int index, char *argstr)
+/*Fills the slot at position index in the args and path array.*/
+void	fill_array(t_pipex *pipex, int index, char *argstr)
 {
 	pipex->args[index] = ft_calloc(count_segments(argstr) + 1, sizeof(char *));
 	if (pipex->args[index] == NULL)
@@ -104,7 +108,8 @@ void	make_cmd(t_pipex *pipex, int index, char *argstr)
 		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_strjoin");
 }
 
-void	make_cmd_arrays(t_pipex *pipex, char **argv)
+/*Makes the args, path and pid arrays.*/
+void	make_arrays(t_pipex *pipex, char **argv)
 {
 	int	cmd_count;
 	int	argv_index;
@@ -124,7 +129,7 @@ void	make_cmd_arrays(t_pipex *pipex, char **argv)
 	arr_index = 0;
 	while (argv_index <= pipex->last_cmd)
 	{
-		make_cmd(pipex, arr_index, argv[argv_index]);
+		fill_array(pipex, arr_index, argv[argv_index]);
 		arr_index++;
 		argv_index++;
 	}
