@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 17:06:55 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 20:51:29 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,4 @@ void	open_fds(t_pipex *pipex, int argc, char **argv)
 	}
 	if (pipex->last_cmd < pipex->first_cmd)
 		terminate(pipex, EXIT_FAILURE, 0, NULL);
-	if (pipe(pipex->pipes[0]) == -1 || pipe(pipex->pipes[1]) == -1)
-		terminate(pipex, EXIT_FAILURE, errno, "pipex: pipe");
 }

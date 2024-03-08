@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 07:38:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 17:07:54 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 21:02:08 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,25 @@
 /*Closes every file descriptor stored in pipex and sets their value to -1.*/
 void	close_all(t_pipex *pipex)
 {
+	int	index;
+
 	if (pipex->input_file != -1)
 		close(pipex->input_file);
 	if (pipex->output_file != -1)
 		close(pipex->output_file);
-	if (pipex->pipes[0][1] != -1)
-		close(pipex->pipes[0][1]);
-	if (pipex->pipes[0][0] != -1)
-		close(pipex->pipes[0][0]);
-	if (pipex->pipes[1][1] != -1)
-		close(pipex->pipes[1][1]);
-	if (pipex->pipes[1][0] != -1)
-		close(pipex->pipes[1][0]);
 	pipex->input_file = -1;
 	pipex->output_file = -1;
-	pipex->pipes[0][1] = -1;
-	pipex->pipes[0][0] = -1;
-	pipex->pipes[1][1] = -1;
-	pipex->pipes[1][0] = -1;
+	index = (pipex->last_cmd - pipex->first_cmd) - 1;
+	while (index > -1)
+	{
+		if (pipex->p_arr[index][0] != -1)
+			close(pipex->p_arr[index][0]);
+		if (pipex->p_arr[index][1] != -1)
+			close(pipex->p_arr[index][1]);
+		pipex->p_arr[index][0] = -1;
+		pipex->p_arr[index][1] = -1;
+		index--;
+	}
 }
 
 /*Waits for every process stored in pipex to finish, 
@@ -69,6 +70,7 @@ int	free_all(t_pipex *pipex)
 	while (pipex->path && pipex->path[index])
 		my_safefree(pipex->path[index++]);
 	my_safefree(pipex->path);
+	my_safefree(pipex->p_arr);
 	index = 0;
 	while (pipex->args && pipex->args[index])
 	{

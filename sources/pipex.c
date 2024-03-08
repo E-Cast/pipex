@@ -6,38 +6,43 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 17:06:39 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/07 21:05:28 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+void	open_pipes(t_pipex *pipex)
+{
+	int	count;
+	int	index;
+
+	count = pipex->last_cmd - pipex->first_cmd;
+	pipex->p_arr = ft_calloc(count, sizeof(int [2]));
+	if (pipex->p_arr == NULL)
+		terminate(pipex, EXIT_FAILURE, errno, "pipex: ft_calloc");
+	index = 0;
+	while (index < count)
+		if (pipe(pipex->p_arr[index++]) == -1)
+			terminate(pipex, EXIT_FAILURE, errno, "pipex: pipe");
+}
+
 /*Finds and returns the needed input file descriptor.*/
 int	get_input(t_pipex *pipex, int index)
 {
-	int	input;
-
 	if (index == 0)
-		input = pipex->input_file;
-	else if ((index % 2) == 1)
-		input = pipex->pipes[0][0];
+		return (pipex->input_file);
 	else
-		input = pipex->pipes[1][0];
-	return (input);
+		return (pipex->p_arr[index - 1][0]);
 }
 
 /*Finds and returns the needed output file descriptor.*/
 int	get_output(t_pipex *pipex, int index)
 {
-	int	output;
-
 	if (pipex->args[index + 1] == NULL)
-		output = pipex->output_file;
-	else if ((index % 2) == 0)
-		output = pipex->pipes[0][1];
+		return (pipex->output_file);
 	else
-		output = pipex->pipes[1][1];
-	return (output);
+		return (pipex->p_arr[index][1]);
 }
 
 /*Executes the command whose args and path are located 
@@ -58,6 +63,7 @@ int	exec_pipex(t_pipex *pipex)
 	int	input;
 	int	output;
 
+	open_pipes(pipex);
 	index = 0;
 	while (pipex->args[index])
 	{
