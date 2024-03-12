@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 07:38:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 21:02:08 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/12 10:19:26 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	wait_all(t_pipex *pipex)
 	index = 0;
 	while (pipex->args && pipex->args[index])
 	{
-		printf("pid:%i\n", pipex->pid[index]);
 		if (pipex->pid[index] != 0)
 			waitpid(pipex->pid[index], &status, 0);
 		index++;

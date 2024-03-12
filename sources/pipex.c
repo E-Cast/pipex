@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 23:07:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 21:07:55 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/12 10:18:45 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ void	exec_cmd(t_pipex *pipex, int index, int input, int output)
 	dup2(input, STDIN_FILENO);
 	dup2(output, STDOUT_FILENO);
 	close_all(pipex);
+	(void) index;
 	execve(pipex->path[index], pipex->args[index], pipex->envp);
-	exit(1);
+	terminate(pipex, EXIT_FAILURE, errno, "pipex: execve");
 }
 
 /*Executes every command stored in the args and path arrays the returns.*/

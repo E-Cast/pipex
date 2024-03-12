@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 22:49:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/07 20:51:29 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/12 10:15:08 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void	open_infile(t_pipex *pipex, char *infile)
 	else if (errno == ENOENT || errno == EACCES)
 	{
 		pipex->input_file = open("/dev/null", O_RDONLY);
-		ft_putstr_fd("pipex: permission denied: ", STDERR_FILENO);
+		if (errno == ENOENT)
+			ft_putstr_fd("pipex: no such file or directory: ", STDERR_FILENO);
+		if (errno == EACCES)
+			ft_putstr_fd("pipex: permission denied: ", STDERR_FILENO);
 		ft_putendl_fd(infile, STDERR_FILENO);
 		pipex->first_cmd += 1;
 	}
