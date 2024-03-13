@@ -6,7 +6,7 @@
 /*   By: ecast <ecast@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 07:38:11 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/12 10:19:26 by ecast            ###   ########.fr       */
+/*   Updated: 2024/03/12 21:02:12 by ecast            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	close_all(t_pipex *pipex)
 	pipex->input_file = -1;
 	pipex->output_file = -1;
 	index = (pipex->last_cmd - pipex->first_cmd) - 1;
-	while (index > -1)
+	while (pipex->p_arr && pipex->p_arr[index] && index > -1)
 	{
 		if (pipex->p_arr[index][0] != -1)
 			close(pipex->p_arr[index][0]);
