@@ -1,8 +1,5 @@
 SRC				=	main.c \
-					fd.c \
-					cmd.c \
-					pipex.c \
-					utility.c
+					input.c \
 
 SRC_DIR			:=	sources/
 OBJ_DIR			:=	objects/
