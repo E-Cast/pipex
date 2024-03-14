@@ -1,6 +1,7 @@
 SRC				=	main.c \
 					input.c \
-					output.c
+					output.c \
+					path.c
 
 SRC_DIR			:=	sources/
 OBJ_DIR			:=	objects/

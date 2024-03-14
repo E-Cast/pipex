@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:17:47 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/14 17:18:23 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:49:53 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_path(t_utils *utils, char *cmd)
 	{
 		path = my_jointhree(utils->env_path[index], "/", cmd);
 		if (path == NULL)
-			terminate(utils, EXIT_FAILURE);
+			terminate(utils, NULL, EXIT_FAILURE);
 		if (access(path, X_OK) == 0)
 			return (path);
 		index++;

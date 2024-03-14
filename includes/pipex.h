@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/14 17:12:21 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:41:00 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct utility_variables
 {
 	int		input_file;
 	int		output_file;
+	int		tmp_fd;
 	int		first_cmd;
 	int		last_cmd;
 	char	**env_path;
@@ -43,9 +44,10 @@ int		open_input(char **argv, int *first_cmd);
 int		open_outfile(char *outfile, int flag, int *last_cmd);
 int		open_output(int argc, char **argv, int *last_cmd);
 
-void	terminate(t_utils *utils, int exit_code);
+void	terminate(t_utils *utils, t_cmd *cmd, int exit_code);
 
 char	**get_env_path(char **envp);
+char	*get_path(t_utils *utils, char *cmd);
 /*Struct used to pass all relevant data in the program 
 	and ensure no leaks are created when terminating.*/
 typedef struct s_pipex
