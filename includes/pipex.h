@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/14 11:52:14 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:23:08 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ int		open_heredoc(char *delimiter, int *first_cmd);
 int		open_infile(char *infile, int *first_cmd);
 int		open_input(char **argv, int *first_cmd);
 
+int		open_outfile(char *outfile, int flag, int *last_cmd);
+int		open_output(int argc, char **argv, int *last_cmd);
+
+void	terminate(t_utils *utils, int exit_code);
+
 /*Struct used to pass all relevant data in the program 
 	and ensure no leaks are created when terminating.*/
 typedef struct s_pipex
@@ -47,7 +52,6 @@ typedef struct s_pipex
 
 /*File descriptors.*/
 
-void	open_outfile(t_pipex *pipex, char *outfile, int flag);
 void	open_fds(t_pipex *pipex, int argc, char **argv);
 
 /*Parsing and preparation of commands.*/
@@ -70,6 +74,5 @@ int		exec_pipex(t_pipex *pipex);
 void	close_all(t_pipex *pipex);
 int		wait_all(t_pipex *pipex);
 int		free_all(t_pipex *pipex);
-void	terminate(t_pipex *pipex, int exit_code, int error, char *prefix);
 
 #endif
