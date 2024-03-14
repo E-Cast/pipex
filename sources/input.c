@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:29:18 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/14 12:21:26 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:02:58 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ int	open_input(char **argv, int *first_cmd)
 	else
 		input_fd = open_infile(argv[1], first_cmd);
 	if (input_fd == -1)
-		exit(EXIT_FAILURE);
+		return (-1);
 	return (input_fd);
 }

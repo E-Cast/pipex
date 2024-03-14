@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/14 12:23:08 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:12:21 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,22 @@
 # include <stdio.h>
 # include <sys/wait.h>
 
+typedef struct s_cmd
+{
+	int		fd[2];
+	char	*path;
+	char	**args;
+	pid_t	pid;
+}	t_cmd;
+
 typedef struct utility_variables
 {
 	int		input_file;
 	int		output_file;
 	int		first_cmd;
 	int		last_cmd;
+	char	**env_path;
+	t_cmd	**cmd_arr;
 }	t_utils;
 
 int		open_heredoc(char *delimiter, int *first_cmd);
@@ -35,6 +45,7 @@ int		open_output(int argc, char **argv, int *last_cmd);
 
 void	terminate(t_utils *utils, int exit_code);
 
+char	**get_env_path(char **envp);
 /*Struct used to pass all relevant data in the program 
 	and ensure no leaks are created when terminating.*/
 typedef struct s_pipex

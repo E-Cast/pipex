@@ -6,35 +6,11 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 12:04:52 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/14 12:17:37 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:18:46 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-// int	open_infile(char *infile, int *first_cmd)
-// {
-// 	int	input_file;
-
-// 	if (access(infile, R_OK) == 0)
-// 		input_file = open(infile, O_RDONLY);
-// 	else if (errno == ENOENT || errno == EACCES)
-// 	{
-// 		input_file = open("/dev/null", O_RDONLY);
-// 		ft_putstr_fd("pipex: ", STDERR_FILENO);
-// 		ft_putstr_fd(infile, STDERR_FILENO);
-// 		if (errno == ENOENT)
-// 			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-// 		if (errno == EACCES)
-// 			ft_putendl_fd(": Permission denied", STDERR_FILENO);
-// 		*first_cmd += 1;
-// 	}
-// 	else
-// 		return (-1);
-// 	if (input_file == -1)
-// 		return (-1);
-// 	return (input_file);
-// }
 
 int	open_outfile(char *outfile, int flag, int *last_cmd)
 {
