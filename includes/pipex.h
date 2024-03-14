@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/14 17:41:00 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:08:10 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ void	terminate(t_utils *utils, t_cmd *cmd, int exit_code);
 
 char	**get_env_path(char **envp);
 char	*get_path(t_utils *utils, char *cmd);
+
+t_cmd	*build_cmd(t_utils *utils, int cmd_index, char **argv);
+void	get_fd(t_utils *utils, t_cmd *cmd, int index);
+void	*free_cmd(t_cmd *cmd);
 /*Struct used to pass all relevant data in the program 
 	and ensure no leaks are created when terminating.*/
 typedef struct s_pipex
@@ -63,29 +67,29 @@ typedef struct s_pipex
 	pid_t	*pid;
 }	t_pipex;
 
-/*File descriptors.*/
+// /*File descriptors.*/
 
-void	open_fds(t_pipex *pipex, int argc, char **argv);
+// void	open_fds(t_pipex *pipex, int argc, char **argv);
 
-/*Parsing and preparation of commands.*/
+// /*Parsing and preparation of commands.*/
 
-char	*make_segment(t_pipex *pipex, char *str, int start, int end);
-char	**segment_str(t_pipex *pipex, char **array, char *str);
-int		count_segments(char *str);
-void	fill_array(t_pipex *pipex, int index, char *argstr);
-void	make_arrays(t_pipex *pipex, char **argv);
+// char	*make_segment(t_pipex *pipex, char *str, int start, int end);
+// char	**segment_str(t_pipex *pipex, char **array, char *str);
+// int		count_segments(char *str);
+// void	fill_array(t_pipex *pipex, int index, char *argstr);
+// void	make_arrays(t_pipex *pipex, char **argv);
 
-/*Execution of commands.*/
+// /*Execution of commands.*/
 
-int		get_input(t_pipex *pipex, int index);
-int		get_output(t_pipex *pipex, int index);
-void	exec_cmd(t_pipex *pipex, int index, int input, int output);
-int		exec_pipex(t_pipex *pipex);
+// int		get_input(t_pipex *pipex, int index);
+// int		get_output(t_pipex *pipex, int index);
+// // void	exec_cmd(t_pipex *pipex, int index, int input, int output);
+// int		exec_pipex(t_pipex *pipex);
 
-/*Utility and cleanup.*/
+// /*Utility and cleanup.*/
 
-void	close_all(t_pipex *pipex);
-int		wait_all(t_pipex *pipex);
-int		free_all(t_pipex *pipex);
+// // void	close_all(t_pipex *pipex);
+// int		wait_all(t_pipex *pipex);
+// int		free_all(t_pipex *pipex);
 
 #endif

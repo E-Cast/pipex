@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:17:47 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/14 17:49:53 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:42:53 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	*get_path(t_utils *utils, char *cmd)
 			terminate(utils, NULL, EXIT_FAILURE);
 		if (access(path, X_OK) == 0)
 			return (path);
+		path = my_safefree(path);
 		index++;
 	}
 	return (NULL);
