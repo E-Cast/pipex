@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:29:18 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/14 11:57:02 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:03:23 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ int	open_infile(char *infile, int *first_cmd)
 	else if (errno == ENOENT || errno == EACCES)
 	{
 		input_file = open("/dev/null", O_RDONLY);
+		ft_putstr_fd("pipex: ", STDERR_FILENO);
+		ft_putstr_fd(infile, STDERR_FILENO);
 		if (errno == ENOENT)
-			ft_putstr_fd("pipex: no such file or directory: ", STDERR_FILENO);
+			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		if (errno == EACCES)
-			ft_putstr_fd("pipex: permission denied: ", STDERR_FILENO);
-		ft_putendl_fd(infile, STDERR_FILENO);
+			ft_putendl_fd(": Permission denied", STDERR_FILENO);
 		*first_cmd += 1;
 	}
 	else
@@ -68,5 +69,7 @@ int	open_input(char **argv, int *first_cmd)
 		input_fd = open_heredoc(argv[2], first_cmd);
 	else
 		input_fd = open_infile(argv[1], first_cmd);
+	if (input_fd == -1)
+		exit(1);
 	return (input_fd);
 }
