@@ -6,12 +6,18 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 00:09:03 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/16 01:25:31 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/16 01:39:29 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/**
+ * @brief Frees the args array.
+ * 
+ * @param args The array to be freed.
+ * @retval NULL
+ */
 void	*free_args(char **args)
 {
 	int	index;
@@ -26,6 +32,13 @@ void	*free_args(char **args)
 	return (NULL);
 }
 
+/**
+ * @brief Allocates the args array.
+ * 
+ * @param str The string to be split into args.
+ * @retval NULL on failure.
+ * @retval The args array on success.
+ */
 char	**alloc_args(char *str)
 {
 	int		count;
@@ -50,7 +63,15 @@ char	**alloc_args(char *str)
 	return (ft_calloc(count + 1, sizeof(char *)));
 }
 
-char	*make_segment(char *str, int length)
+/**
+ * @brief Extracts an argument from the str.
+ * 
+ * @param str The string to extract from.
+ * @param length How much to extract from the string.
+ * @retval NULL on failure.
+ * @retval The argument on success.
+ */
+char	*extract_arg(char *str, int length)
 {
 	char	*segment;
 	int		str_inx;
@@ -77,6 +98,14 @@ char	*make_segment(char *str, int length)
 	return (segment);
 }
 
+/**
+ * @brief Splits the string into the array.
+ * 
+ * @param args The args array.
+ * @param str The string to be split.
+ * @retval NULL on failure.
+ * @retval The args array on success.
+ */
 void	*fill_args(char **args, char *str)
 {
 	char	quote;
@@ -88,7 +117,7 @@ void	*fill_args(char **args, char *str)
 	{
 		if (str[str_inx] == ' ' && quote == 0)
 		{
-			*args++ = make_segment(str, str_inx);
+			*args++ = extract_arg(str, str_inx);
 			if (*(args - 1) == NULL)
 				return (NULL);
 			str += str_inx + 1;
@@ -100,12 +129,19 @@ void	*fill_args(char **args, char *str)
 			quote = 0;
 		str_inx++;
 	}
-	*args = make_segment(str, str_inx);
+	*args = extract_arg(str, str_inx);
 	if (*args == NULL)
 		return (NULL);
 	return (args);
 }
 
+/**
+ * @brief Allocates the args array and splits argstr into it.
+ * 
+ * @param argstr The string to be split.
+ * @retval NULL on failure.
+ * @retval The args array on success.
+ */
 char	**get_args(char *argstr)
 {
 	char	**args;
@@ -141,5 +177,5 @@ int	main(int argc, char **argv)
 			printf("%s\n", args[index++]);
 		args = free_args(args);
 	}
-	(void) argc;
+	(void) argc;//
 }
