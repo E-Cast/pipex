@@ -6,12 +6,19 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 22:53:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/15 23:24:17 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/16 00:07:18 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/**
+ * @brief Allocates an array of every path in the PATH environment variable.
+ * 
+ * @param envp Environment pointer.
+ * @retval NULL on failure.
+ * @retval Array of paths on success.
+ */
 char	**envp_to_paths(char **envp)
 {
 	int		index;
@@ -28,7 +35,14 @@ char	**envp_to_paths(char **envp)
 	return (env_path);
 }
 
-char	*free_paths(char **paths, char *return_value)
+/**
+ * @brief Frees the paths array.
+ * 
+ * @param paths Array to be freed.
+ * @param retval Value to be returned.
+ * @retval retval
+ */
+char	*free_paths(char **paths, char *retval)
 {
 	int	index;
 
@@ -36,9 +50,18 @@ char	*free_paths(char **paths, char *return_value)
 	while (paths[index])
 		my_safefree(paths[index++]);
 	paths = my_safefree(paths);
-	return (return_value);
+	return (retval);
 }
 
+/**
+ * @brief Get the path to cmd
+ * 
+ * @param cmd Name of the command to find the path to.
+ * @param envp Environment pointer.
+ * @retval NULL on failure.
+ * @retval An empty string on an invalid command.
+ * @retval The path to cmd on success.
+ */
 char	*get_path(char *cmd, char **envp)
 {
 	char	**paths;
