@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 22:53:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/16 00:07:18 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/16 00:32:05 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ char	*free_paths(char **paths, char *retval)
 
 	index = 0;
 	while (paths[index])
-		my_safefree(paths[index++]);
+	{
+		paths[index] = my_safefree(paths[index]);
+		index++;
+	}
 	paths = my_safefree(paths);
 	return (retval);
 }
