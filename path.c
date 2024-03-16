@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 22:53:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/16 00:32:05 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/16 01:32:19 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*free_paths(char **paths, char *retval)
 }
 
 /**
- * @brief Get the path to cmd
+ * @brief Get the path to cmd.
  * 
  * @param cmd Name of the command to find the path to.
  * @param envp Environment pointer.
@@ -101,5 +101,5 @@ int	main(int argc, char **argv, char **envp)
 	else
 		printf("%s\n", path);
 	free(path);
-	(void) argc;
+	(void) argc;//
 }
