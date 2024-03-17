@@ -6,12 +6,19 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:27:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/17 15:41:09 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:51:28 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/**
+ * @brief Emulates bash's here document by using get_next_line on STDIN.
+ * 
+ * @param delimiter The delimiter for here_doc.
+ * @retval -1 on failure.
+ * @retval fd on success.
+ */
 int	open_heredoc(char *delimiter)
 {
 	int		heredoc_pipe[2];
@@ -35,7 +42,15 @@ int	open_heredoc(char *delimiter)
 	return (heredoc_pipe[0]);
 }
 
-int	open_infile(char **argv)
+/**
+ * @brief Opens the input fd for pipex. 
+ * Either with open for infile, or get_next_line for here_doc.
+ * 
+ * @param argv Arguments received by pipex.
+ * @retval -1 on failure.
+ * @retval fd on success.
+ */
+int	get_input_fd(char **argv)
 {
 	int		input_file;
 	char	*infile;
@@ -67,12 +82,12 @@ int	main(int argc, char **argv)
 {
 	int	fd;
 
-	fd = open_infile(argv);
+	fd = get_input_fd(argv);
 	if (fd == -1)
 		printf("error\n");
 	else
 		printf("success\n");
 	close(fd);
 	return (0);
-	(void) argc;
+	(void) argc;//
 }
