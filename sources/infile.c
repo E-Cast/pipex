@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   infile.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/14 11:29:18 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/14 17:02:58 by ecastong         ###   ########.fr       */
+/*   Created: 2024/03/17 15:27:40 by ecastong          #+#    #+#             */
+/*   Updated: 2024/03/17 15:41:09 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	open_heredoc(char *delimiter, int *first_cmd)
+int	open_heredoc(char *delimiter)
 {
 	int		heredoc_pipe[2];
 	char	*input;
@@ -32,14 +32,18 @@ int	open_heredoc(char *delimiter, int *first_cmd)
 	}
 	my_safefree(input);
 	close(heredoc_pipe[1]);
-	*first_cmd += 1;
 	return (heredoc_pipe[0]);
 }
 
-int	open_infile(char *infile, int *first_cmd)
+int	open_infile(char **argv)
 {
-	int	input_file;
+	int		input_file;
+	char	*infile;
 
+	if (my_strcmp(argv[1], "here_doc") == 0)
+		return (open_heredoc(argv[2]));
+	else
+		infile = argv[1];
 	if (access(infile, R_OK) == 0)
 		input_file = open(infile, O_RDONLY);
 	else if (errno == ENOENT || errno == EACCES)
@@ -51,7 +55,6 @@ int	open_infile(char *infile, int *first_cmd)
 			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		if (errno == EACCES)
 			ft_putendl_fd(": Permission denied", STDERR_FILENO);
-		*first_cmd += 1;
 	}
 	else
 		return (-1);
@@ -60,16 +63,16 @@ int	open_infile(char *infile, int *first_cmd)
 	return (input_file);
 }
 
-int	open_input(char **argv, int *first_cmd)
+int	main(int argc, char **argv)
 {
-	int	input_fd;
+	int	fd;
 
-	*first_cmd = 2;
-	if (my_strcmp(argv[1], "here_doc") == 0)
-		input_fd = open_heredoc(argv[2], first_cmd);
+	fd = open_infile(argv);
+	if (fd == -1)
+		printf("error\n");
 	else
-		input_fd = open_infile(argv[1], first_cmd);
-	if (input_fd == -1)
-		return (-1);
-	return (input_fd);
+		printf("success\n");
+	close(fd);
+	return (0);
+	(void) argc;
 }
