@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:27:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/17 15:51:28 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/17 16:10:25 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	open_heredoc(char *delimiter)
  */
 int	get_input_fd(char **argv)
 {
-	int		input_file;
+	int		fd;
 	char	*infile;
 
 	if (my_strcmp(argv[1], "here_doc") == 0)
@@ -60,10 +60,10 @@ int	get_input_fd(char **argv)
 	else
 		infile = argv[1];
 	if (access(infile, R_OK) == 0)
-		input_file = open(infile, O_RDONLY);
+		fd = open(infile, O_RDONLY);
 	else if (errno == ENOENT || errno == EACCES)
 	{
-		input_file = open("/dev/null", O_RDONLY);
+		fd = open("/dev/null", O_RDONLY);
 		ft_putstr_fd("pipex: ", STDERR_FILENO);
 		ft_putstr_fd(infile, STDERR_FILENO);
 		if (errno == ENOENT)
@@ -73,9 +73,9 @@ int	get_input_fd(char **argv)
 	}
 	else
 		return (-1);
-	if (input_file == -1)
+	if (fd == -1)
 		return (-1);
-	return (input_file);
+	return (fd);
 }
 
 int	main(int argc, char **argv)
