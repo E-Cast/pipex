@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/17 22:15:52 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:49:28 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,6 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/wait.h>
-
-typedef struct s_command_arrays
-{
-	int		*inputs;
-	int		*outputs;
-	char	*paths;
-	char	***args;
-	pid_t	*pid;
-}	t_cmds;
 
 typedef struct s_arrays
 {
@@ -54,9 +45,15 @@ int		init_arr(t_arr *arr, char **argv, char **envp);
 int		get_first_cmd(char **argv);
 int		get_cmd_count(char **argv);
 
+//exec.c
+
+void	exec_cmd(t_arr arr, int index, char **envp, int cmd_count);
+int		wait_all(t_arr arr, int cmd_count);
+int		exec_all(t_arr arr, int cmd_count, char **envp);
+
 //fd_arr.c
 
-void	free_fd_arr(t_arr arr);
+void	close_fd_arr(t_arr arr);
 int		get_fd_arr(t_arr *arr, char **argv);
 
 //infile.c

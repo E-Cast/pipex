@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:52:12 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 00:36:55 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:55:49 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,3 @@ int	get_output_fd(char **argv)
 		return (-1);
 	return (fd);
 }
-

@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 22:11:57 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 00:18:18 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:56:15 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	free_arr(t_arr arr, int arr_length)
 {
 	int	index;
 
-	//wait_all (maybe comes after closing the fds)
 	my_safefree(arr.pids);
 	if (arr.inputs || arr.outputs)
 	{
@@ -41,6 +40,7 @@ void	free_arr(t_arr arr, int arr_length)
 	}
 	my_safefree(arr.args);
 	my_safefree(arr.paths);
+	my_safefree(arr.pids);
 }
 
 /**

@@ -2,6 +2,7 @@ SRC				=	main.c \
 					args.c \
 					arr.c \
 					count.c \
+					exec.c \
 					fd_arr.c \
 					infile.c \
 					outfile.c \
