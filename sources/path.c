@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 22:53:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/16 01:45:13 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/17 21:13:25 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,18 @@ char	*get_path(char *cmd, char **envp)
 	return (free_paths(paths, ft_strdup("")));
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	char	*path;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	*path;
 
-	printf("%s\n", argv[1]);
-	path = get_path(argv[1], envp);
-	if (path == NULL)
-		printf("Error\n");
-	else if (path[0] == '\0')
-		printf("invalid command\n");
-	else
-		printf("%s\n", path);
-	free(path);
-	(void) argc;//
-}
+// 	printf("%s\n", argv[1]);
+// 	path = get_path(argv[1], envp);
+// 	if (path == NULL)
+// 		printf("Error\n");
+// 	else if (path[0] == '\0')
+// 		printf("invalid command\n");
+// 	else
+// 		printf("%s\n", path);
+// 	free(path);
+// 	(void) argc;/////////////////////////////////////////////////////////////////
+// }

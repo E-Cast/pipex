@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 00:09:03 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/16 01:39:29 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/17 21:13:45 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,21 +161,21 @@ char	**get_args(char *argstr)
 	return (args);
 }
 
-int	main(int argc, char **argv)
-{
-	char	**args;
-	int		index;
+// int	main(int argc, char **argv)
+// {
+// 	char	**args;
+// 	int		index;
 
-	printf("%s\n", argv[1]);
-	args = get_args(argv[1]);
-	if (args == NULL)
-		printf("Error\n");
-	else
-	{
-		index = 0;
-		while (args[index])
-			printf("%s\n", args[index++]);
-		args = free_args(args);
-	}
-	(void) argc;//
-}
+// 	printf("%s\n", argv[1]);
+// 	args = get_args(argv[1]);
+// 	if (args == NULL)
+// 		printf("Error\n");
+// 	else
+// 	{
+// 		index = 0;
+// 		while (args[index])
+// 			printf("%s\n", args[index++]);
+// 		args = free_args(args);
+// 	}
+// 	(void) argc;/////////////////////////////////////////////////////////////////
+// }
