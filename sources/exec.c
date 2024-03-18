@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 00:47:39 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 01:00:05 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 01:49:01 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	wait_all(t_arr arr, int cmd_count)
 	int	status;
 
 	index = 0;
+	status = 0;
 	while (index < cmd_count)
 	{
 		if (arr.pids[index] != 0)

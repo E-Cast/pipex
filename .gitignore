@@ -7,7 +7,4 @@ pipex
 
 infile
 outfile
-thirdfile
-fourthfile
-old_sources/
-file
+file*

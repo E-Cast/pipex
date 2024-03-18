@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 22:11:57 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 00:56:15 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 01:56:59 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ void	free_arr(t_arr arr, int arr_length)
 			my_safefree(arr.paths[index]);
 		index++;
 	}
-	my_safefree(arr.args);
-	my_safefree(arr.paths);
-	my_safefree(arr.pids);
+	if (arr.args)
+		arr.args = my_safefree(arr.args);
+	if (arr.paths)
+		arr.paths = my_safefree(arr.paths);
+	if (arr.pids)
+		arr.pids = my_safefree(arr.pids);
 }
 
 /**
