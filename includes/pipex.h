@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:44:46 by ecast             #+#    #+#             */
-/*   Updated: 2024/03/14 19:08:10 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/17 22:15:52 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,78 +18,60 @@
 # include <stdio.h>
 # include <sys/wait.h>
 
-typedef struct s_cmd
+typedef struct s_command_arrays
 {
-	int		fd[2];
-	char	*path;
-	char	**args;
-	pid_t	pid;
-}	t_cmd;
-
-typedef struct utility_variables
-{
-	int		input_file;
-	int		output_file;
-	int		tmp_fd;
-	int		first_cmd;
-	int		last_cmd;
-	char	**env_path;
-	t_cmd	**cmd_arr;
-}	t_utils;
-
-int		open_heredoc(char *delimiter, int *first_cmd);
-int		open_infile(char *infile, int *first_cmd);
-int		open_input(char **argv, int *first_cmd);
-
-int		open_outfile(char *outfile, int flag, int *last_cmd);
-int		open_output(int argc, char **argv, int *last_cmd);
-
-void	terminate(t_utils *utils, t_cmd *cmd, int exit_code);
-
-char	**get_env_path(char **envp);
-char	*get_path(t_utils *utils, char *cmd);
-
-t_cmd	*build_cmd(t_utils *utils, int cmd_index, char **argv);
-void	get_fd(t_utils *utils, t_cmd *cmd, int index);
-void	*free_cmd(t_cmd *cmd);
-/*Struct used to pass all relevant data in the program 
-	and ensure no leaks are created when terminating.*/
-typedef struct s_pipex
-{
-	int		input_file;
-	int		output_file;
-	int		(*p_arr)[2];
-	int		first_cmd;
-	int		last_cmd;
-	char	**envp;
-	char	**path;
+	int		*inputs;
+	int		*outputs;
+	char	*paths;
 	char	***args;
 	pid_t	*pid;
-}	t_pipex;
+}	t_cmds;
 
-// /*File descriptors.*/
+typedef struct s_arrays
+{
+	int		*inputs;
+	int		*outputs;
+	char	**paths;
+	char	***args;
+	pid_t	*pids;
+}	t_arr;
 
-// void	open_fds(t_pipex *pipex, int argc, char **argv);
+//args.c
 
-// /*Parsing and preparation of commands.*/
+void	*free_args(char **args);
+char	**alloc_args(char *str);
+char	*extract_arg(char *str, int length);
+void	*fill_args(char **args, char *str);
+char	**get_args(char *argstr);
 
-// char	*make_segment(t_pipex *pipex, char *str, int start, int end);
-// char	**segment_str(t_pipex *pipex, char **array, char *str);
-// int		count_segments(char *str);
-// void	fill_array(t_pipex *pipex, int index, char *argstr);
-// void	make_arrays(t_pipex *pipex, char **argv);
+//arr.c
 
-// /*Execution of commands.*/
+void	free_arr(t_arr arr, int cmd_count);
+int		init_arr(t_arr *arr, char **argv, char **envp);
 
-// int		get_input(t_pipex *pipex, int index);
-// int		get_output(t_pipex *pipex, int index);
-// // void	exec_cmd(t_pipex *pipex, int index, int input, int output);
-// int		exec_pipex(t_pipex *pipex);
+//count.c
 
-// /*Utility and cleanup.*/
+int		get_first_cmd(char **argv);
+int		get_cmd_count(char **argv);
 
-// // void	close_all(t_pipex *pipex);
-// int		wait_all(t_pipex *pipex);
-// int		free_all(t_pipex *pipex);
+//fd_arr.c
+
+void	free_fd_arr(t_arr arr);
+int		get_fd_arr(t_arr *arr, char **argv);
+
+//infile.c
+
+int		open_heredoc(char *delimiter);
+int		get_input_fd(char **argv);
+
+//outfile.c
+
+int		get_output_fd(char **argv);
+
+//path.c
+
+char	**envp_to_paths(char **envp);
+char	*free_paths(char **paths, char *retval);
+char	*get_path(char *cmd, char **envp);
 
 #endif

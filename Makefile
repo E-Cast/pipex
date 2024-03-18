@@ -1,8 +1,11 @@
 SRC				=	main.c \
-					input.c \
-					output.c \
-					path.c \
-					cmd.c \
+					args.c \
+					arr.c \
+					count.c \
+					fd_arr.c \
+					infile.c \
+					outfile.c \
+					path.c
 
 SRC_DIR			:=	sources/
 OBJ_DIR			:=	objects/
