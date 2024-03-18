@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:16:48 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/17 21:13:37 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:36:28 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,3 @@ int	get_cmd_count(char **argv)
 	else
 		return ((index - first_cmd) - 1);
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	printf("first_cmd_index:%i\n", get_first_cmd(argv));
-// 	printf("cmd_count:%i\n", get_cmd_count(argv));
-// 	(void) argc;/////////////////////////////////////////////////////////////////
-// }

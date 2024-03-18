@@ -6,29 +6,27 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 20:18:41 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/17 21:13:33 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:36:46 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 /**
- * @brief Closes every fd in both fd arrays and frees them.
+ * @brief Closes every fd in both fd arrays and.
  * 
  * @param arr Struct containing every array for pipex.
  */
-void	free_fd_arr(t_arr arr)
+void	close_fd_arr(t_arr arr)
 {
 	int	index;
 
 	index = 0;
 	while (arr.inputs && arr.inputs[index] != 0)
 		close(arr.inputs[index++]);
-	arr.inputs = my_safefree(arr.inputs);
 	index = 0;
 	while (arr.outputs && arr.outputs[index] != 0)
 		close(arr.outputs[index++]);
-	arr.outputs = my_safefree(arr.outputs);
 }
 
 /**
@@ -67,26 +65,3 @@ int	get_fd_arr(t_arr *arr, char **argv)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	t_arr	arr;
-// 	int		index;
-
-// 	if (get_fd_arr(&arr, argv) == EXIT_FAILURE)
-// 	{
-// 		printf("error\n");
-// 		free_fd_arr(arr);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	index = 0;
-// 	while (arr.inputs[index])
-// 	{
-// 		printf("index:%i\ninput:%i\noutput:%i\n\n",
-// 			index, arr.inputs[index], arr.outputs[index]);
-// 		index++;
-// 	}
-// 	free_fd_arr(arr);
-// 	return (EXIT_SUCCESS);
-// 	(void) argc;/////////////////////////////////////////////////////////////////
-// }

@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:27:40 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/17 21:13:29 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:36:44 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,3 @@ int	get_input_fd(char **argv)
 		return (-1);
 	return (fd);
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	int	fd;
-
-// 	fd = get_input_fd(argv);
-// 	if (fd == -1)
-// 		printf("error\n");
-// 	else
-// 		printf("success\n");
-// 	close(fd);
-// 	return (0);
-// 	(void) argc;/////////////////////////////////////////////////////////////////
-// }
