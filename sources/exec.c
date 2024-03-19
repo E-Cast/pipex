@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 00:47:39 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 20:23:03 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:36:52 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	exec_cmd(t_arr arr, int index, char **envp, int cmd_count)
 	}
 	else if (arr.paths[index][0] == '\0')
 	{
+		ft_putstr_fd("pipex: ", STDERR_FILENO);
 		ft_putstr_fd(arr.args[index][0], STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	}
