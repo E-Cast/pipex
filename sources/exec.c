@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 00:47:39 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 01:49:01 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 20:23:03 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,23 @@ void	exec_cmd(t_arr arr, int index, char **envp, int cmd_count)
 	dup2(arr.inputs[index], STDIN_FILENO);
 	dup2(arr.outputs[index], STDOUT_FILENO);
 	close_fd_arr(arr);
-	if (arr.paths[index][0] == '\0')
+	if (ft_strchr(arr.args[index][0], '/') != NULL)
+	{
+		if (access(arr.args[index][0], X_OK) != 0)
+		{
+			ft_putstr_fd("pipex: ", STDERR_FILENO);
+			ft_putstr_fd(arr.args[index][0], STDERR_FILENO);
+			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		}
+		execve(arr.args[index][0], arr.args[index], envp);
+	}
+	else if (arr.paths[index][0] == '\0')
 	{
 		ft_putstr_fd(arr.args[index][0], STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	}
-	execve(arr.paths[index], arr.args[index], envp);
+	else
+		execve(arr.paths[index], arr.args[index], envp);
 	free_arr(arr, cmd_count);
 	exit(EXIT_FAILURE);
 }
