@@ -6,7 +6,7 @@
 /*   By: ecastong <ecastong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 00:09:03 by ecastong          #+#    #+#             */
-/*   Updated: 2024/03/18 00:36:38 by ecastong         ###   ########.fr       */
+/*   Updated: 2024/03/18 21:07:51 by ecastong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,30 @@ void	*free_args(char **args)
 /**
  * @brief Allocates the args array.
  * 
- * @param str The string to be split into args.
+ * @param s The string to be split into args.
  * @retval NULL on failure.
  * @retval The args array on success.
  */
-char	**alloc_args(char *str)
+char	**alloc_args(char *s)
 {
 	int		count;
 	char	quote;
-	int		ix;
+	int		i;
 
 	count = 1;
 	quote = 0;
-	ix = 0;
-	while (str[ix] != 0)
+	i = 0;
+	while (s[i] != 0)
 	{
-		if (str[ix] == ' ' && quote == 0)
+		if (quote == 0 && s[i] == ' ' && s[i + 1] != ' ' && s[i + 1] != '\0')
 			count++;
-		else if (quote == 0 && (str[ix] == '\'' || str[ix] == '\"'))
-			quote = str[ix];
-		else if (quote != 0 && (str[ix] == '\'' || str[ix] == '\"'))
+		else if (quote == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quote = s[i];
+		else if (quote != 0 && (s[i] == '\'' || s[i] == '\"'))
 			quote = 0;
-		else if ((quote == '\"' || quote == 0) && str[ix] == '\\')
-			ix++;
-		ix++;
+		else if ((quote == '\"' || quote == 0) && s[i] == '\\')
+			i++;
+		i++;
 	}
 	return (ft_calloc(count + 1, sizeof(char *)));
 }
@@ -86,7 +86,9 @@ char	*extract_arg(char *str, int length)
 	quote = 0;
 	while (str_inx < length)
 	{
-		if (quote == 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
+		if (quote == 0 && str[str_inx] == ' ')
+			quote = 0;
+		else if (quote == 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
 			quote = str[str_inx];
 		else if (quote != 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
 			quote = 0;
@@ -102,36 +104,36 @@ char	*extract_arg(char *str, int length)
  * @brief Splits the string into the array.
  * 
  * @param args The args array.
- * @param str The string to be split.
+ * @param s The string to be split.
  * @retval NULL on failure.
  * @retval The args array on success.
  */
-void	*fill_args(char **args, char *str)
+void	*fill_args(char **args, char *s)
 {
 	char	quote;
-	int		str_inx;
+	int		i;
 
 	quote = 0;
-	str_inx = 0;
-	while (str[str_inx] != 0)
+	i = 0;
+	while (s[i] == ' ')
+		i++;
+	while (s[i] != 0)
 	{
-		if (str[str_inx] == ' ' && quote == 0)
+		if (quote == 0 && s[i] == ' ' && s[i + 1] != ' ' && s[i + 1] != '\0')
 		{
-			*args++ = extract_arg(str, str_inx);
+			*args++ = extract_arg(s, i);
 			if (*(args - 1) == NULL)
 				return (NULL);
-			str += str_inx + 1;
-			str_inx = -1;
+			s += i + 1;
+			i = -1;
 		}
-		else if (quote == 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
-			quote = str[str_inx];
-		else if (quote != 0 && (str[str_inx] == '\'' || str[str_inx] == '\"'))
+		else if (quote == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quote = s[i];
+		else if (quote != 0 && (s[i] == '\'' || s[i] == '\"'))
 			quote = 0;
-		str_inx++;
+		i++;
 	}
-	*args = extract_arg(str, str_inx);
-	if (*args == NULL)
-		return (NULL);
+	*args = extract_arg(s, i);
 	return (args);
 }
 
